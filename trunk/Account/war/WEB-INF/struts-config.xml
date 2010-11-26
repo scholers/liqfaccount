@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts-config PUBLIC
+	  "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+	  "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+	<action-mappings>
+		<action path="/bookext" type="com.scholers.account.action.InActionExt" parameter="method">
+			<forward name="bookList" path="/pagesExt/bookList.jsp"/>
+			<forward name="bookTypeList" path="/pagesExt/bookTypeList.jsp"/>
+			<forward name="login" path="/pagesExt/Login.jsp"/>  
+			<forward name="getUserName" path="/indexExt.jsp"/>
+		</action>
+		<action path="/payext" type="com.scholers.account.action.PayActionExt" parameter="method">
+			<forward name="payList" path="/pagesExt/payList.jsp"/>
+			<forward name="payTypeList" path="/pagesExt/payTypeList.jsp"/>
+		</action>
+		<action path="/usersext" type="com.scholers.account.action.UsersActionExt" parameter="method">
+			<forward name="usersList" path="/pagesExt/usersList.jsp"/>
+		</action>
+		<action path="/analysis" type="com.scholers.account.action.AnalysisAction" parameter="method">
+			<forward name="incomyear" path="/pagesExt/IncomeYear.jsp"/>
+			<forward name="payyear" path="/pagesExt/PayYear.jsp"/> 
+			<forward name="getInByM" path="/pagesExt/InMonth.jsp"/> 
+			<forward name="getPayByM" path="/pagesExt/PayMonth.jsp"/> 
+		</action>
+	</action-mappings>  
+</struts-config>

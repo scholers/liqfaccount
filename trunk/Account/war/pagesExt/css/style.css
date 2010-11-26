@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+.add {
+    background-image:url(../images/add.gif) !important;
+}
+.option {
+    background-image:url(../images/plugin.gif) !important;
+}
+.remove {
+    background-image:url(../images/delete.gif) !important;
+}
+.logout {
+    background-image:url(../images/logout.png) !important;
+}
+.login {
+    background-image:url(../images/login.png) !important;
+}
+.find {
+    background-image:url(../images/find.png) !important;
+}
+.tot {
+    background-image:url(../images/tot.png) !important;
+}
