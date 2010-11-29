@@ -15,26 +15,34 @@ import org.apache.struts.actions.DispatchAction;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.scholers.account.bean.Book;
-import com.scholers.account.bean.Pay;
 import com.scholers.account.bean.Users;
-import com.scholers.account.business.UsersService;
+import com.scholers.account.business.impl.UsersService;
 import com.scholers.account.util.ExtHelper;
 
 
 
-
+/**
+ * 
+ * @author weique.lqf
+ *
+ */
 public class UsersActionExt extends DispatchAction{ 
-	   UsersService   service = new UsersService();
+	   private UsersService   usersService;
 	
-	 public ActionForward showUsersList(ActionMapping mapping, ActionForm form,
+
+
+	public void setUsersService(UsersService usersService) {
+		this.usersService = usersService;
+	}
+
+	public ActionForward showUsersList(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 	throws Exception {
 		return mapping.findForward("usersList");
 	}
 	
 	 /**
-	  * 
+	  * 获取用户列表
 	  * @param mapping
 	  * @param form
 	  * @param request
@@ -49,11 +57,10 @@ public class UsersActionExt extends DispatchAction{
 		int page =Integer.valueOf(start);  
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		String times =request.getParameter("dd");
 		List<Users> payListRtn = null;
 		int count = 15;
 		 //总数
-	    int totalSize = service.getUsersNum(user.getEmail());
+	    int totalSize = usersService.getUsersNum(user.getEmail());
 	    int startNum = 0;
 	    if(request.getParameter("start") != null){
 	    	startNum = Integer.parseInt(request.getParameter("start"));
@@ -68,7 +75,7 @@ public class UsersActionExt extends DispatchAction{
 	    }
 	    
 		
-		payListRtn = service.getUsers(startNum, endNum);
+		payListRtn = usersService.getUsers(startNum, endNum);
 		
 		
 		//分页处理
@@ -92,7 +99,7 @@ public class UsersActionExt extends DispatchAction{
 			}
 		}
 		
-		String strJson = ExtHelper.getJsonFromList(payListRtn.size(), userList, "");
+		String strJson = ExtHelper.getJsonFromListTime(payListRtn.size(), userList, "");
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write(strJson);
 		return null;
@@ -120,7 +127,7 @@ public class UsersActionExt extends DispatchAction{
         users.setEmail(user.getEmail());
         users.setUserType(0L);
         users.setCreateDate(new Date());
-		service.addUsers(users); 
+        usersService.addUsers(users); 
 		boolean isSuccess = true;
 		String usersId = "";
 		//if(usersId == 0L){  
@@ -151,7 +158,7 @@ public class UsersActionExt extends DispatchAction{
 		users.setId(usersId);
 		users.setPassword(password);
 		users.setUsername(username);
-		boolean isSuccess = service.updateUsers(users);
+		boolean isSuccess = usersService.updateUsers(users);
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write("{success:"+isSuccess+",usersId:"+usersId+"}");
 		return null;
@@ -173,7 +180,7 @@ public class UsersActionExt extends DispatchAction{
 		int num = 0;//service.getUsersNum(usersId);
 		response.setContentType("text/json;charset=UTF-8");
 		if(num == 0){  
-			boolean isSuccess = service.deleteUsers(usersId);
+			boolean isSuccess = usersService.deleteUsers(usersId);
 			response.getWriter().write("{success:"+isSuccess+",num:"+num+"}");
 		}else{
 			response.getWriter().write("{success:false,num:"+num+"}");
@@ -181,12 +188,21 @@ public class UsersActionExt extends DispatchAction{
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward getUsersById(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 	throws Exception {
 		response.setContentType("text/json;charset=UTF-8");
 		Long usersId = Long.parseLong(request.getParameter("usersId"));
-		Users users = service.getUsers(usersId);
+		Users users = usersService.getUsers(usersId);
 		String json = null;
 		if(users != null){  
 			json = "{success:true,data:"+ExtHelper.getJsonFromBean(users)+"}";
