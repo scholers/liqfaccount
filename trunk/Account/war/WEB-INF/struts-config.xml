@@ -31,6 +31,7 @@
 			<forward name="getInByM" path="/pagesExt/InMonth.jsp" />
 			<forward name="getPayByM" path="/pagesExt/PayMonth.jsp" />
 			<forward name="getCountList" path="/pagesExt/countAll.jsp" />
+			<forward name="getCountListChart" path="/pagesExt/image3.jsp" />
 		</action>
 	</action-mappings>
 	<!-- 控制器 -->

@@ -29,30 +29,31 @@
 		})
 		//创建工具栏组件
 		var toolbar = new Ext.Toolbar([
-			{text : '新增用户',iconCls:'add',handler : showAddUsersType},
-			'-',
-			{text : '修改用户',iconCls:'option',handler : showModifyUsersType},
-			'-',
+			//{text : '新增用户',iconCls:'add',handler : showAddUsersType},
+			//'-',
+			//{text : '修改用户',iconCls:'option',handler : showModifyUsersType},
+			//'-',
 			{text : '删除用户',iconCls:'remove',handler : showDeleteUsersType}
+			
 		]);
 		//创建Grid表格组件
 		var cb = new Ext.grid.CheckboxSelectionModel()
 		var usersGrid = new Ext.grid.GridPanel({
 		    height:600,
 			applyTo : 'grid-div',
-			tbar : '',
+			tbar : toolbar,
 			frame:true,
 			store: typeStore,
 			viewConfig : {
 				autoFill : true
 			},
-			
+			sm : cb,
 			columns: [//配置表格列
 				new Ext.grid.RowNumberer({
 					header : '行号',
 					width : 40
 				}),//表格行号组件
-				
+				cb,
 				{header: "编号", width: 80, dataIndex: 'id', sortable: true},
 				{header: "邮箱", width: 180, dataIndex: 'email', sortable: true},
 				{header: "登录次数", width: 180, dataIndex: 'loginNum', sortable: true},
@@ -68,6 +69,12 @@
 	    	})
 	    });
 			typeStore.load({params:{start:0, limit:15}});
+			
+		function onItemCheck(){
+		        var dd=Ext.get('times').getValue(); 
+		        var endtime=Ext.get('times2').getValue();     
+		        payStore.reload({params:{start:0,limit:15,dd:dd,endtime:endtime}}); 
+		};
 		//创建新增或修改用户类型信息的form表单
 		Ext.QuickTips.init();
 		Ext.form.Field.prototype.msgTarget = 'side';//统一指定错误信息提示方式
@@ -157,6 +164,7 @@
 		}
 		//删除用户类型
 		function deleteUsers(usersId){
+			//var usersIds = usersId.join('-');
 			var msgTip = Ext.MessageBox.show({
 				title:'提示',
 				width : 250,
@@ -164,7 +172,7 @@
 			});
 			Ext.Ajax.request({
 				url : 'usersext.do?method=deleteUsers',
-				params : {usersId : usersId},
+				params : {userIds : usersId},
 				method : 'POST',
 				success : function(response,options){
 					msgTip.hide();
