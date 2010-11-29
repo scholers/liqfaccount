@@ -109,12 +109,12 @@
 		
 		var node7 = new Ext.tree.TreeNode({  
 			text : '财务状态数据分析',
-			url : 'analysis.do?method=showCountList&ddf=dd'
+			url : 'analysis.do?method=showCountList'
 			
 		});
 		var node8 = new Ext.tree.TreeNode({
-			text : '月支出数据分析',  
-			url : 'analysis.do?method=getPayByM'
+			text : '图形分析',  
+			url : 'analysis.do?method=showCountListChart'
 		});
 		var node9 = new Ext.tree.TreeNode({
 			text : '年收入数据分析',
@@ -125,7 +125,7 @@
 			url : 'analysis.do?method=getBookByYP'
 		});
 		root5.appendChild(node7);  
-		//root5.appendChild(node8);
+		root5.appendChild(node8);
 		//root5.appendChild(node9);
 		//root5.appendChild(node10);
 		
