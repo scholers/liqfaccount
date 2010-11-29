@@ -4,24 +4,39 @@
 	  "http://struts.apache.org/dtds/struts-config_1_3.dtd">
 <struts-config>
 	<action-mappings>
-		<action path="/bookext" type="com.scholers.account.action.InActionExt" parameter="method">
-			<forward name="bookList" path="/pagesExt/bookList.jsp"/>
-			<forward name="bookTypeList" path="/pagesExt/bookTypeList.jsp"/>
-			<forward name="login" path="/pagesExt/Login.jsp"/>  
-			<forward name="getUserName" path="/indexExt.jsp"/>
+	<!-- type="com.scholers.account.action.InActionExt" 由spring接管了 -->
+		<action path="/bookext" 
+			parameter="method">
+			<forward name="bookList" path="/pagesExt/bookList.jsp" />
+			<forward name="bookTypeList" path="/pagesExt/bookTypeList.jsp" />
+			<forward name="login" path="/pagesExt/Login.jsp" />
+			<forward name="getUserName" path="/indexExt.jsp" />
 		</action>
-		<action path="/payext" type="com.scholers.account.action.PayActionExt" parameter="method">
-			<forward name="payList" path="/pagesExt/payList.jsp"/>
-			<forward name="payTypeList" path="/pagesExt/payTypeList.jsp"/>
+		<!-- type="com.scholers.account.action.PayActionExt" 由spring接管了 -->
+		<action path="/payext" 
+			parameter="method">
+			<forward name="payList" path="/pagesExt/payList.jsp" />
+			<forward name="payTypeList" path="/pagesExt/payTypeList.jsp" />
 		</action>
-		<action path="/usersext" type="com.scholers.account.action.UsersActionExt" parameter="method">
-			<forward name="usersList" path="/pagesExt/usersList.jsp"/>
+		<!-- type="com.scholers.account.action.UsersActionExt" 由spring接管了 -->
+		<action path="/usersext" 
+			parameter="method">
+			<forward name="usersList" path="/pagesExt/usersList.jsp" />
 		</action>
-		<action path="/analysis" type="com.scholers.account.action.AnalysisAction" parameter="method">
-			<forward name="incomyear" path="/pagesExt/IncomeYear.jsp"/>
-			<forward name="payyear" path="/pagesExt/PayYear.jsp"/> 
-			<forward name="getInByM" path="/pagesExt/InMonth.jsp"/> 
-			<forward name="getPayByM" path="/pagesExt/PayMonth.jsp"/> 
+		<!-- type="com.scholers.account.action.AnalysisAction" 由spring接管了 -->
+		<action path="/analysis" 
+			parameter="method">
+			<forward name="incomyear" path="/pagesExt/IncomeYear.jsp" />
+			<forward name="payyear" path="/pagesExt/PayYear.jsp" />
+			<forward name="getInByM" path="/pagesExt/InMonth.jsp" />
+			<forward name="getPayByM" path="/pagesExt/PayMonth.jsp" />
+			<forward name="getCountList" path="/pagesExt/countAll.jsp" />
 		</action>
-	</action-mappings>  
+	</action-mappings>
+	<!-- 控制器 -->
+	<controller>
+		<!-- 定义请求处理器 的 类来自 spring-webmvc-struts.jar -->
+		<set-property property="processorClass"
+			value="org.springframework.web.struts.DelegatingRequestProcessor" />
+	</controller>
 </struts-config>

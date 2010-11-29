@@ -46,13 +46,13 @@
 			viewConfig : {
 				autoFill : true
 			},
-			sm : cb,
+			
 			columns: [//配置表格列
 				new Ext.grid.RowNumberer({
 					header : '行号',
 					width : 40
 				}),//表格行号组件
-				cb,
+				
 				{header: "编号", width: 80, dataIndex: 'id', sortable: true},
 				{header: "邮箱", width: 180, dataIndex: 'email', sortable: true},
 				{header: "登录次数", width: 180, dataIndex: 'loginNum', sortable: true},

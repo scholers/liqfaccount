@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ page import="com.scholers.account.util.ComUtil" %>
-<%@ page import="com.scholers.account.business.PayService" %>
+<%@ page import="com.scholers.account.business.impl.PayService" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
@@ -170,6 +170,16 @@
 			}}));
 
 		
+		//分页条件参数  
+		payStore.on('beforeload',function(){  
+		 Ext.apply(  
+		  this.baseParams,  
+		  {  
+			   dd:Ext.get('times').getValue(),
+		       endtime:Ext.get('times2').getValue()
+		     }  
+		 );  
+		});  
 		
 		function onItemCheck(){
 		        var dd=Ext.get('times').getValue(); 
@@ -472,11 +482,12 @@
 						list.push(rec.get('id'))
 					}
 				}
+				if(list.length == 0){
+					Ext.MessageBox.alert('提示','总计行不能修改或者删除！');
+				}
 				
 			}
-			if(list.length == 0){
-				Ext.MessageBox.alert('提示','总计行不能修改或者删除！');
-			}
+			
 			return list;
 		}
 	});

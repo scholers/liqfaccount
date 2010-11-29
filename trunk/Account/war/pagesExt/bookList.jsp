@@ -4,7 +4,7 @@
      <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
-<%@ page import="com.scholers.account.business.InService" %>
+<%@ page import="com.scholers.account.business.impl.InService" %>
     <%
     java.util.Date date = new java.util.Date();
     String strCurDate =  ComUtil.getForDate(date);
@@ -75,18 +75,30 @@ var dftDate = '<%=strCurDate%>';
 			'-',
 			{text : '本月总收入',iconCls:'tot',handler : showTotalPay},
 			'-', 
-			new Ext.Toolbar.TextItem('按时间查询：'),
+			new Ext.Toolbar.TextItem('按时间查询：开始日期'),
 			'-',   
 			{
 				xtype:'datefield',
 				width : 150,
-				allowBlank : false,
+				allowBlank : true,
 				blankText : '不能为空',
 				id : 'times',
 				name : 'times',
-				emptyText:'请选择时间', 
+				
 				format:'Y-m-d'
              },
+             new Ext.Toolbar.TextItem('结束日期：'),
+ 			'-',   
+ 			{
+ 				xtype:'datefield',
+ 				width : 150,
+ 				allowBlank : true,
+ 				blankText : '不能为空',
+ 				id : 'times2',
+ 				name : 'times2',
+ 				
+ 				format:'Y-m-d'
+              },
              '-', 
 			{iconCls:'find',handler:onItemCheck }
 		]);  
@@ -113,11 +125,11 @@ var dftDate = '<%=strCurDate%>';
 				}),//表格行号组件
 				cb,
 				{header: "收入编号", width: 1, dataIndex: 'id', sortable: true,hidden:true},
-				{header: "收入日期", width: 80, dataIndex: 'useDate', sortable: true},
-				{header: "金额", width: 80, dataIndex: 'price', sortable: true},
+				{header: "收入日期", width: 80, dataIndex: 'useDate', sortable: true,align : 'center'},
+				{header: "金额", width: 80, dataIndex: 'price', sortable: true, align : 'right'},
 				{header: "收入名称", width: 80, dataIndex: 'bookName', sortable: true,hidden:true},
-				{header: "作者", width: 80, dataIndex: 'author', sortable: true},
-				{header: "类型", width: 80, dataIndex: 'typeName', sortable: true},
+				{header: "作者", width: 80, dataIndex: 'author', sortable: true,align : 'center'},
+				{header: "类型", width: 80, dataIndex: 'typeName', sortable: true,align : 'center'},
 				
 				{header: "备注", width: 80, dataIndex: 'brief', sortable: true}
 			],
@@ -131,6 +143,17 @@ var dftDate = '<%=strCurDate%>';
 
 		});
 		bookStore.load({params:{start:0, limit:15}});
+		
+		//分页条件参数  
+		bookStore.on('beforeload',function(){  
+		 Ext.apply(  
+		  this.baseParams,  
+		  {  
+			   dd:Ext.get('times').getValue(),
+		       endtime:Ext.get('times2').getValue()
+		     }  
+		 );  
+		});  
 		//创建新增或修改收入信息的form表单
 		Ext.QuickTips.init();
 		Ext.form.Field.prototype.msgTarget = 'side';//统一指定错误信息提示方式
@@ -186,7 +209,7 @@ var dftDate = '<%=strCurDate%>';
 					}),//设置数据源
 					allQuery:'allbook',//查询全部信息的查询字符串
 					triggerAction: 'all',//单击触发按钮显示全部数据
-					editable : false,//禁止编辑
+					readOnly:false,//禁止编辑
 					loadingText : '正在加载收入类型信息',//加载数据时显示的提示信息
 					displayField:'title',//定义要显示的字段
 					valueField : 'id',
@@ -204,7 +227,7 @@ var dftDate = '<%=strCurDate%>';
 					emptyText:'请选择日期', 
 					format:'Y-m-d',
 				
-					fieldLabel:'支出日期'
+					fieldLabel:'收入日期'
 						
 
 				},{
@@ -424,7 +447,12 @@ var dftDate = '<%=strCurDate%>';
 			}else{
 				for(var i = 0 ; i < recs.length ; i++){
 					var rec = recs[i];
-					list.push(rec.get('id'))
+					if(rec.get('id') != 0){
+						list.push(rec.get('id'))
+					}
+				}
+				if(list.length == 0){
+					Ext.MessageBox.alert('提示','总计行不能修改或者删除！');
 				}
 			}
 			return list;
@@ -432,7 +460,8 @@ var dftDate = '<%=strCurDate%>';
 		//按时间查询方法
          function onItemCheck(){
        		  var dd=Ext.get('times').getValue();  
-              bookStore.reload({params:{start:0,limit:15,dd:dd}}); 
+		       var endtime=Ext.get('times2').getValue();     
+              bookStore.reload({params:{start:0,limit:15,dd:dd, endtime:endtime}}); 
        };
 		//查看总支出
 		function showTotalPay(){
