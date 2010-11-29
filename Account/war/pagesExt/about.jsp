@@ -6,8 +6,6 @@
 <title>个人/家庭理财系统介绍</title>
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 </head>
-
-
 <body>
 <div class='menuDiv' style='height:96%;width:100%'>
 		<div style="width: 735px; height: 400px; overflow: auto; font-size:13px;" align=left>

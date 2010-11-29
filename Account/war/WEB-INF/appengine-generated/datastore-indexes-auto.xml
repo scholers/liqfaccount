@@ -1,18 +1,31 @@
-<!-- Indices written at Wed, 24 Nov 2010 15:23:07 UTC -->
+<!-- Indices written at Fri, 26 Nov 2010 07:57:35 UTC -->
 
 <datastore-indexes>
 
-    <!-- Used 55 times in query history -->
-    <datastore-index kind="Pay" ancestor="false" source="auto">
+    <!-- Used 3 times in query history -->
+    <datastore-index kind="Users" ancestor="false" source="auto">
+        <property name="email" direction="asc"/>
+        <property name="createDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 3 times in query history -->
+    <datastore-index kind="Users" ancestor="false" source="auto">
+        <property name="createDate" direction="desc"/>
+        <property name="__key__" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 11 times in query history -->
+    <datastore-index kind="Book" ancestor="false" source="auto">
         <property name="email" direction="asc"/>
         <property name="useDate" direction="desc"/>
         <property name="__key__" direction="desc"/>
     </datastore-index>
 
-    <!-- Used 1 time in query history -->
+    <!-- Used 6 times in query history -->
     <datastore-index kind="Pay" ancestor="false" source="auto">
         <property name="email" direction="asc"/>
-        <property name="useDate" direction="asc"/>
+        <property name="useDate" direction="desc"/>
+        <property name="__key__" direction="desc"/>
     </datastore-index>
 
 </datastore-indexes>
