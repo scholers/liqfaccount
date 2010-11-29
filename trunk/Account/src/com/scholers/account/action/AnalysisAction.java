@@ -305,10 +305,34 @@ public class AnalysisAction extends DispatchAction {
 		return mapping.findForward("getPayByM");
 	}
 	
+	/**
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	 public ActionForward showCountList(ActionMapping mapping, ActionForm form,
 				HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 			return mapping.findForward("getCountList");
+		}
+	 
+	 /**
+	  * 
+	  * @param mapping
+	  * @param form
+	  * @param request
+	  * @param response
+	  * @return
+	  * @throws Exception
+	  */
+	 public ActionForward showCountListChart(ActionMapping mapping, ActionForm form,
+				HttpServletRequest request, HttpServletResponse response)
+		throws Exception {
+			return mapping.findForward("getCountListChart");
 		}
 	 
 	 
@@ -350,6 +374,52 @@ public class AnalysisAction extends DispatchAction {
 		payListRtn.add(countBean);
 		payListRtn.add(countBeanPay);
 		payListRtn.add(countBeanEnd);
+		String strJson = ExtHelper.getJsonFromList(payListRtn.size(), payListRtn, String.valueOf(countBeanEnd.getPrice()));
+		response.setContentType("text/json;charset=UTF-8");
+		response.getWriter().write(strJson);
+		return null;
+	}
+	
+	
+	/**
+	 * 查询统计结果
+	 * 查询出来的结果形成三条记录
+	 * 分别是总收入，总支出，总结余
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward getCountListChart(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		//开始日期
+		String times =request.getParameter("dd");
+		//结束日期
+		String endtime =request.getParameter("endtime");
+		//总收入
+		CountBean countBean = acountBusiness.getInByTimeAll(user.getEmail(), times, endtime);
+		countBean.setId(1L);
+		//总支出
+		CountBean countBeanPay = acountBusiness.getPayByTimeAll(user.getEmail(), times, endtime);
+		countBeanPay.setId(2L);
+		//总结余
+		CountBean countBeanEnd = new CountBean();
+		countBeanEnd.setId(3L);
+		countBeanEnd.setEmail(user.getEmail());
+		countBeanEnd.setAuthor(user.getEmail());
+		countBeanEnd.setNotes("总结余");
+		countBeanEnd.setPrice(ComUtil.sub(countBean.getPrice(), countBeanPay.getPrice()));
+		List<CountBean> payListRtn = new ArrayList<CountBean>();
+		payListRtn.add(countBean);
+		payListRtn.add(countBeanPay);
+		payListRtn.add(countBeanEnd);
+		
 		String strJson = ExtHelper.getJsonFromList(payListRtn.size(), payListRtn, String.valueOf(countBeanEnd.getPrice()));
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write(strJson);
