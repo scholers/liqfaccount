@@ -1,6 +1,7 @@
 package com.scholers.account.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,8 +31,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.scholers.account.business.InService;
-import com.scholers.account.business.PayService;
+import com.scholers.account.bean.CountBean;
+import com.scholers.account.business.impl.AcountBusiness;
+import com.scholers.account.business.impl.InService;
+import com.scholers.account.util.ComUtil;
+import com.scholers.account.util.ExtHelper;
 
 /**
  * 统计分析
@@ -39,8 +43,18 @@ import com.scholers.account.business.PayService;
  *
  */
 public class AnalysisAction extends DispatchAction {
-	private static InService Iservice = new InService();
-	private PayService Pservice = new PayService();
+	
+	private AcountBusiness acountBusiness;
+	public void setAcountBusiness(AcountBusiness acountBusiness) {
+		this.acountBusiness = acountBusiness;
+	}
+
+
+	private  InService inService; 
+
+	public void setInService(InService inService) {
+		this.inService = inService;
+	}
 
 	// 放入数据
 	private static CategoryDataset getDataSet(List a) {
@@ -66,7 +80,7 @@ public class AnalysisAction extends DispatchAction {
 		String filename = null;
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		List a = Iservice.getBookByY(user.getEmail());
+		List a = inService.getBookByY(user.getEmail());
 		CategoryDataset dataset = getDataSet(a);
 		JFreeChart chart = ChartFactory.createLineChart("2009年全年收入走势图", // chart
 																		// title
@@ -119,7 +133,7 @@ public class AnalysisAction extends DispatchAction {
 		// Users user = (Users) request.getSession().getAttribute("user");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		List a = Iservice.getBookByYP(user.getEmail());
+		List a = inService.getBookByYP(user.getEmail());
 		CategoryDataset dataset = getDataSet(a);
 		JFreeChart chart = ChartFactory.createLineChart("2009年全年支出走势图", // chart
 																		// title
@@ -165,7 +179,7 @@ public class AnalysisAction extends DispatchAction {
 		return mapping.findForward("payyear");
 	}
 
-	private static CategoryDataset getDataSet1(List a) {
+	private CategoryDataset getDataSet1(List a) {
 		DefaultCategoryDataset dataset = null;
 		try {
 			dataset = new DefaultCategoryDataset();
@@ -176,7 +190,7 @@ public class AnalysisAction extends DispatchAction {
 			int month = calendar.get(Calendar.MONTH) + 1;
 
 			String m = String.valueOf(month + 1);
-			int s = Iservice.GetDay();
+			int s = inService.getDay();
 			for (int i = 0; i < s; i++) {
 				dataset.addValue((Number) a.get(i), m + "月", i + 1);
 			}
@@ -193,7 +207,7 @@ public class AnalysisAction extends DispatchAction {
 		// Users user = (Users) request.getSession().getAttribute("user");
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		List a = Iservice.getInByM(user.getEmail());
+		List a = inService.getInByM(user.getEmail());
 		CategoryDataset dataset = getDataSet1(a);
 		JFreeChart chart = ChartFactory.createLineChart("本月收入走势图", // chart
 																	// title
@@ -245,7 +259,7 @@ public class AnalysisAction extends DispatchAction {
 		String filename = null;
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		List a = Iservice.getBookByM(user.getEmail());
+		List a = inService.getBookByM(user.getEmail());
 		CategoryDataset dataset = getDataSet1(a);
 		JFreeChart chart = ChartFactory.createLineChart("本月支出走势图", // chart
 																	// title
@@ -290,5 +304,58 @@ public class AnalysisAction extends DispatchAction {
 		}
 		return mapping.findForward("getPayByM");
 	}
+	
+	 public ActionForward showCountList(ActionMapping mapping, ActionForm form,
+				HttpServletRequest request, HttpServletResponse response)
+		throws Exception {
+			return mapping.findForward("getCountList");
+		}
+	 
+	 
+	/**
+	 * 查询统计结果
+	 * 查询出来的结果形成三条记录
+	 * 分别是总收入，总支出，总结余
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward getCountList(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		//开始日期
+		String times =request.getParameter("dd");
+		//结束日期
+		String endtime =request.getParameter("endtime");
+		//总收入
+		CountBean countBean = acountBusiness.getInByTimeAll(user.getEmail(), times, endtime);
+		countBean.setId(1L);
+		//总支出
+		CountBean countBeanPay = acountBusiness.getPayByTimeAll(user.getEmail(), times, endtime);
+		countBeanPay.setId(2L);
+		//总结余
+		CountBean countBeanEnd = new CountBean();
+		countBeanEnd.setId(3L);
+		countBeanEnd.setEmail(user.getEmail());
+		countBeanEnd.setAuthor(user.getEmail());
+		countBeanEnd.setNotes("总结余");
+		countBeanEnd.setPrice(ComUtil.sub(countBean.getPrice(), countBeanPay.getPrice()));
+		List<CountBean> payListRtn = new ArrayList<CountBean>();
+		payListRtn.add(countBean);
+		payListRtn.add(countBeanPay);
+		payListRtn.add(countBeanEnd);
+		String strJson = ExtHelper.getJsonFromList(payListRtn.size(), payListRtn, String.valueOf(countBeanEnd.getPrice()));
+		response.setContentType("text/json;charset=UTF-8");
+		response.getWriter().write(strJson);
+		return null;
+	}
+	
+	
 
 }

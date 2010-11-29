@@ -3,6 +3,7 @@ package com.scholers.account.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonValueProcessor;
@@ -58,7 +59,9 @@ public class JsonDateValueProcessor implements JsonValueProcessor {
         try { 
             if (value instanceof Date) { 
                 SimpleDateFormat sdf = new SimpleDateFormat(datePattern, 
-                        Locale.UK); 
+                        Locale.CHINA); 
+                //设定为北京时间
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                 return sdf.format((Date) value); 
             } 
             return value == null ? "" : value.toString(); 

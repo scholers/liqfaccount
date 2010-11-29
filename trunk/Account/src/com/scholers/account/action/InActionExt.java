@@ -18,15 +18,23 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Book;
 import com.scholers.account.bean.BookType;
 import com.scholers.account.bean.Users;
-import com.scholers.account.business.InService;
+import com.scholers.account.business.impl.InService;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
-
+/**
+ * 
+ * @author weique.lqf
+ *
+ */
 public class InActionExt extends DispatchAction {
 
-	private InService service = new InService();
+	/**
+	 * 采用spring注入的方式
+	 */
+	private InService inService;
 
+	
 	/*
 	 * 显示收入类型
 	 */
@@ -52,47 +60,21 @@ public class InActionExt extends DispatchAction {
 	throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		String sumPay = ComUtil.getBigDecimal(service.getInPay(user.getEmail()));
+		String sumPay = ComUtil.getBigDecimal(inService.getInPay(user.getEmail()));
 		request.getSession().setAttribute("sumIncome", sumPay);
-		String sumPayY = ComUtil.getBigDecimal(service.getSumInY(user.getEmail()));
+		String sumPayY = ComUtil.getBigDecimal(inService.getSumInY(user.getEmail()));
 		request.getSession().setAttribute("sumIncomeY", sumPayY);
 		String start = request.getParameter("start");
 		int page=Integer.valueOf(start);
 		String times = request.getParameter("dd");
-		/*if(times !=null){
-			books = service.getInByTime(user.getEmail(), times);
-		}else{
-			books = service.getBooks(user.getEmail());
-		}
-		if(books == null) {
-			books = new ArrayList<Book>();
-		}
-		//分页处理
-		List<Book> book = new ArrayList<Book>();
-		if(page == 0){
-			if(books.size() > 15){
-				book.addAll(books.subList(0, 15));
-			}else{
-				book.addAll(books);
-			}   
-		}else{   
-			int num = page+15;
-			if(books.size()>num){
-				for(int i=page; i<num;i++){
-					book.add(books.get(i));  
-				}
-			}else{
-				for(int i=page; i<books.size();i++){
-					book.add(books.get(i));
-				}
-			}
-		}*/
-		
+		//结束日期
+		String endtime =request.getParameter("endtime");
+	
 		
 		List<Book> payListRtn = null;
 		int count = 15;
 		 //总数
-	    int totalSize = service.getInSize(user.getEmail(), times);
+	    int totalSize = inService.getInSize(user.getEmail(), times, endtime);
 	    int startNum = 0;
 	    if(request.getParameter("start") != null){
 	    	startNum = Integer.parseInt(request.getParameter("start"));
@@ -107,7 +89,7 @@ public class InActionExt extends DispatchAction {
 	    }
 	    
 		
-		payListRtn = service.getInByTime(startNum, endNum, user.getEmail(), times);
+		payListRtn = inService.getInByTime(startNum, endNum, user.getEmail(), times, endtime);
 		
 		String xml = ExtHelper.getJsonFromList(totalSize, payListRtn, "");
 		response.setContentType("text/json;charset=UTF-8");
@@ -122,7 +104,7 @@ public class InActionExt extends DispatchAction {
 	throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		List<BookType> bookTypes = service.getBookTypes(user.getEmail());     
+		List<BookType> bookTypes = inService.getBookTypes(user.getEmail());     
 		String xml = ExtHelper.getJsonFromList(bookTypes.size(), bookTypes, "");
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write(xml);
@@ -136,9 +118,9 @@ public class InActionExt extends DispatchAction {
 	throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		String sumPay = ComUtil.getBigDecimal(service.getInPay(user.getEmail()));
+		String sumPay = ComUtil.getBigDecimal(inService.getInPay(user.getEmail()));
 		request.getSession().setAttribute("sumIncome", sumPay);
-		String sumPayY = ComUtil.getBigDecimal(service.getSumInY(user.getEmail()));
+		String sumPayY = ComUtil.getBigDecimal(inService.getSumInY(user.getEmail()));
 		request.getSession().setAttribute("sumIncomeY", sumPayY);
 		String bookName = request.getParameter("bookName");
 		String author = request.getParameter("author");
@@ -157,7 +139,7 @@ public class InActionExt extends DispatchAction {
 		book.setPrice(price);
 		book.setBrief(brief);
 		book.setEmail(user.getEmail());
-		Long bookId = service.addBook(book);
+		Long bookId = inService.addBook(book);
 		boolean isSuccess = true;
 		if(bookId == -1){  
 			isSuccess = false;      
@@ -180,7 +162,7 @@ public class InActionExt extends DispatchAction {
 		bookType.setTitle(title);  
 		bookType.setDetail(detail);
 		bookType.setEmail(user.getEmail());
-		Long iRtn = service.addBookType(bookType);
+		Long iRtn = inService.addBookType(bookType);
 		boolean isSuccess = true;
 		if(iRtn == -1){
 			isSuccess = false;
@@ -197,9 +179,9 @@ public class InActionExt extends DispatchAction {
 	throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		String sumPay = ComUtil.getBigDecimal(service.getInPay(user.getEmail()));
+		String sumPay = ComUtil.getBigDecimal(inService.getInPay(user.getEmail()));
 		request.getSession().setAttribute("sumIncome", sumPay);
-		String sumPayY = ComUtil.getBigDecimal(service.getSumInY(user.getEmail()));
+		String sumPayY = ComUtil.getBigDecimal(inService.getSumInY(user.getEmail()));
 		request.getSession().setAttribute("sumIncomeY", sumPayY);
 		
 		Long bookId = Long.parseLong(request.getParameter("id"));
@@ -220,7 +202,7 @@ public class InActionExt extends DispatchAction {
 		book.setBookTypeId(bookTypeId);
 		book.setPrice(price);
 		book.setBrief(brief);
-		boolean isSuccess = service.updateBook(book);
+		boolean isSuccess = inService.updateBook(book);
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write("{success:"+isSuccess+",bookId:"+bookId+"}");
 		return null;
@@ -239,7 +221,7 @@ public class InActionExt extends DispatchAction {
 		bookType.setId(bookTypeId);
 		bookType.setTitle(title);
 		bookType.setDetail(detail);
-		boolean isSuccess = service.updateBookType(bookType);
+		boolean isSuccess = inService.updateBookType(bookType);
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write("{success:"+isSuccess+",bookTypeId:"+bookTypeId+"}");
 		return null;
@@ -251,10 +233,10 @@ public class InActionExt extends DispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 	throws Exception {
 		Long bookTypeId = Long.parseLong(request.getParameter("bookTypeId"));
-		//int num = service.getBookNum(bookTypeId);
+		//int num = inService.getBookNum(bookTypeId);
 		response.setContentType("text/json;charset=UTF-8");
 		//if(num == 0){
-			boolean isSuccess = service.deleteBookType(bookTypeId);
+			boolean isSuccess = inService.deleteBookType(bookTypeId);
 			response.getWriter().write("{success:"+isSuccess+",num:"+isSuccess+"}");
 		//}else{
 		//	response.getWriter().write("{success:false,num:"+num+"}");
@@ -273,7 +255,7 @@ public class InActionExt extends DispatchAction {
 		//re//quest.getSession().setAttribute("sumIncomeY", sumIncomeY);
 		response.setContentType("text/json;charset=UTF-8");
 		Long bookId = Long.parseLong(request.getParameter("bookId"));
-		Book book = service.getBook(bookId);
+		Book book = inService.getBook(bookId);
 		String json = null;
 		if(book != null){
 			json = "{success:true,data:"+ExtHelper.getJsonFromBean(book)+"}";
@@ -291,7 +273,7 @@ public class InActionExt extends DispatchAction {
 	throws Exception {
 		response.setContentType("text/json;charset=UTF-8");
 		Long bookTypeId = Long.parseLong(request.getParameter("bookTypeId"));
-		BookType bookType = service.getBookType(bookTypeId);
+		BookType bookType = inService.getBookType(bookTypeId);
 		String json = null;
 		if(bookType != null){
 			json = "{success:true,data:"+ExtHelper.getJsonFromBean(bookType)+"}";
@@ -309,9 +291,9 @@ public class InActionExt extends DispatchAction {
 	throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		String sumPay = ComUtil.getBigDecimal(service.getInPay(user.getEmail()));
+		String sumPay = ComUtil.getBigDecimal(inService.getInPay(user.getEmail()));
 		request.getSession().setAttribute("sumIncome", sumPay);
-		String sumPayY = ComUtil.getBigDecimal(service.getSumInY(user.getEmail()));
+		String sumPayY = ComUtil.getBigDecimal(inService.getSumInY(user.getEmail()));
 		request.getSession().setAttribute("sumIncomeY", sumPayY);
 		String bookIds = request.getParameter("bookIds");
 
@@ -321,7 +303,7 @@ public class InActionExt extends DispatchAction {
 			Long id = new Long(ids[i]);
 			idList.add(id);
 		}
-		boolean isSuccess = service.deleteBooks(idList);
+		boolean isSuccess = inService.deleteBooks(idList);
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write("{success:"+isSuccess+"}");
 		return null;
@@ -338,7 +320,7 @@ public class InActionExt extends DispatchAction {
 			 Users user = new Users();
 			 response.setContentType("text/json;charset=UTF-8");
 			 if(rand.equals(randCode)){
-				  user = service.getUsers(username);  
+				  user = inService.getUsers(username);  
 			 		if(user != null){
 			 			if(user.getPassword().equals(password)){
 					 		request.getSession().setAttribute("user", user);
@@ -369,14 +351,14 @@ public class InActionExt extends DispatchAction {
 			UserService userService = UserServiceFactory.getUserService();
 			User user2 = userService.getCurrentUser();
 		   String username = user.getUsername();
-		   Long sumIncom = service.getIncome(user.getId());
+		   Long sumIncom = 0L;//inService.getIncome(user.getId());
 			request.getSession().setAttribute("sumIncome", sumIncom);
 			int sumPay = 0;//Pservice.getSumPay(user2.getEmail());
 			request.getSession().setAttribute("sumPay", sumPay);
-			List SPayY = service.getBookByYP(user.getEmail());
+			List SPayY = inService.getBookByYP(user.getEmail());
 			Long sumPayY = Long.parseLong(SPayY.get(0).toString())+Long.parseLong(SPayY.get(1).toString())+Long.parseLong(SPayY.get(2).toString())+Long.parseLong(SPayY.get(3).toString())+Long.parseLong(SPayY.get(4).toString())+Long.parseLong(SPayY.get(5).toString())+Long.parseLong(SPayY.get(6).toString())+Long.parseLong(SPayY.get(7).toString())+Long.parseLong(SPayY.get(8).toString())+Long.parseLong(SPayY.get(9).toString())+Long.parseLong(SPayY.get(10).toString())+Long.parseLong(SPayY.get(11).toString());
 			request.getSession().setAttribute("sumPayY", sumPayY);
-			List SIncomeY = service.getBookByY(user.getEmail());
+			List SIncomeY = inService.getBookByY(user.getEmail());
 			Long sumIncomeY = Long.parseLong(SIncomeY.get(0).toString())+Long.parseLong(SIncomeY.get(1).toString())+Long.parseLong(SIncomeY.get(2).toString())+Long.parseLong(SIncomeY.get(3).toString())+Long.parseLong(SIncomeY.get(4).toString())+Long.parseLong(SIncomeY.get(5).toString())+Long.parseLong(SIncomeY.get(6).toString())+Long.parseLong(SIncomeY.get(7).toString())+Long.parseLong(SIncomeY.get(8).toString())+Long.parseLong(SIncomeY.get(9).toString())+Long.parseLong(SIncomeY.get(10).toString())+Long.parseLong(SIncomeY.get(11).toString());
 			request.getSession().setAttribute("sumIncomeY", sumIncomeY);
 			request.getSession().setAttribute("username",username);
@@ -384,6 +366,9 @@ public class InActionExt extends DispatchAction {
 		   response.getWriter().write("{username:'"+username+"'}");
 		   response.sendRedirect("indexExt.jsp");
 		   return null;
+	}
+	public void setInService(InService inService) {
+		this.inService = inService;
 	}
 	
 	

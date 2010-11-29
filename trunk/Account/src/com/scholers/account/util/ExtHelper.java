@@ -75,6 +75,34 @@ public class ExtHelper {
 		System.out.println(strRen);
 		return strRen;
 	}
+	
+	
+	/**
+	 * 通过List生成JSON数据
+	 * @param recordTotal 记录总数，不一定与beanList中的记录数相等
+	 * @param beanList 包含bean对象的集合
+	 * @return 生成的JSON数据
+	 */
+	public static String getJsonFromListTime(long recordTotal , List beanList, String strTotalMoney){
+		TotalJson total = new TotalJson();
+		List Ll = new ArrayList();
+		total.setResults(recordTotal);
+		total.setItems(beanList);  
+		total.setStrTotalMoney(strTotalMoney);
+		
+		JsonConfig jsonConfig = new JsonConfig(); 
+		jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor("yyyy-MM-dd HH:mm:ss"));
+		jsonConfig.registerJsonValueProcessor(Float.class, new JsonFloatValueProcessor()); 
+		
+		JSONObject JsonObject = JSONObject.fromObject(total, jsonConfig);
+		String strRen = "";
+		try {
+			strRen = URLDecoder.decode(JsonObject.toString(), "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} 
+		return strRen;
+	}
 	/**  
 	 * 通过List生成JSON数据
 	 * @param beanList 包含bean对象的集合
