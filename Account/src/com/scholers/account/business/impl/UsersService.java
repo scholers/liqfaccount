@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.scholers.account.bean.Pay;
 import com.scholers.account.bean.Users;
 import com.scholers.account.business.UsersServicesIntf;
 import com.scholers.account.dao.PMF;
@@ -178,18 +179,25 @@ public class UsersService implements UsersServicesIntf{
 	}
 	/**
 	 * 删除用户信息
-	 * @param bookTypeId 用户信息id
+	 * @param  usersId用户信息id
 	 * @return 删除成功返回true，否则返回false
 	 */
-	public boolean deleteUsers(Long usersId){
+	public boolean deleteUsers(List<Long> userIds) {
 		boolean isSuccess = true;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			Users users = pm
-					.getObjectById(Users.class, usersId);
-			pm.deletePersistent(users);
-		} catch (RuntimeException e) {  
+			
+			for (int i = 0; i < userIds.size(); i++) {
+				Long userId = (Long) userIds.get(i);
+				Users user = pm
+				.getObjectById(Users.class, userId);
+				pm.deletePersistent(user);
+			}
+			
+		} catch (Exception e) {
+			
 			isSuccess = false;
+			e.printStackTrace();
 		} finally {
 			pm.close();
 		}

@@ -176,15 +176,14 @@ public class UsersActionExt extends DispatchAction{
 	public ActionForward deleteUsers(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 	throws Exception {
-		Long usersId = Long.parseLong(request.getParameter("usersId"));
-		int num = 0;//service.getUsersNum(usersId);
+		String userIds = request.getParameter("userIds");
+		
+		List<Long> idList = new ArrayList<Long>();
+		idList.add(Long.valueOf(userIds));
+
+		boolean isSuccess = usersService.deleteUsers(idList);
 		response.setContentType("text/json;charset=UTF-8");
-		if(num == 0){  
-			boolean isSuccess = usersService.deleteUsers(usersId);
-			response.getWriter().write("{success:"+isSuccess+",num:"+num+"}");
-		}else{
-			response.getWriter().write("{success:false,num:"+num+"}");
-		}
+		response.getWriter().write("{success:" + isSuccess + "}");
 		return null;
 	}
 	

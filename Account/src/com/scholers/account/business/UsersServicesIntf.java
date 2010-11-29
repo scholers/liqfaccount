@@ -37,7 +37,7 @@ public interface UsersServicesIntf {
 	 * @param bookTypeId 用户信息id
 	 * @return 删除成功返回true，否则返回false
 	 */
-	public boolean deleteUsers(Long usersId);
+	public boolean deleteUsers(List<Long> userIds) ;
 	
 
 }
