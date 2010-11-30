@@ -126,9 +126,9 @@ var dftDate = '<%=strCurDate%>';
 				}),//表格行号组件
 				cb,
 				{header: "收入编号", width: 1, dataIndex: 'id', sortable: true,hidden:true},
-				{header: "收入日期", width: 80, dataIndex: 'useDate', sortable: true,align : 'center'},
-				{header: "金额", width: 80, dataIndex: 'price', sortable: true, align : 'right'},
-				{header: "收入名称", width: 80, dataIndex: 'bookName', sortable: true,hidden:true},
+				{header: "收入日期", width: 60, dataIndex: 'useDate', sortable: true,align : 'center'},
+				{header: "金额", width: 60, dataIndex: 'price', sortable: true, align : 'right'},
+				{header: "收入名称", width: 60, dataIndex: 'bookName', sortable: true,hidden:true},
 				{header: "作者", width: 80, dataIndex: 'author', sortable: true,align : 'center'},
 				{header: "类型", width: 80, dataIndex: 'typeName', sortable: true,align : 'center'},
 				

@@ -132,8 +132,8 @@
 				}),//表格行号组件
 				cb,
 				{header: "支出编号", width: 80, dataIndex: 'id', sortable: true,hidden:true},
-				{header: "支出日期", width: 80, dataIndex: 'useDate', sortable: true,align : 'center'},
-				{header: "金额", width: 80, dataIndex: 'price', sortable: true, align : 'right'},
+				{header: "支出日期", width: 60, dataIndex: 'useDate', sortable: true,align : 'center'},
+				{header: "金额", width: 60, dataIndex: 'price', sortable: true, align : 'right'},
 				{header: "支出名称", width: 80, dataIndex: 'payName', sortable: true,hidden:true},
 				{header: "作者", width: 80, dataIndex: 'author', sortable: true,align : 'center'},
 				{header: "类型", width: 80, dataIndex: 'typeName', sortable: true,align : 'center'},
