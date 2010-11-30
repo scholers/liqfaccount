@@ -195,98 +195,98 @@
 			]
 		});
 		if(uname==""){
-		new Ext.Viewport({
-			title : 'Ext.Viewport示例',
-			layout:'border',//表格布局
-			items: [{
-				title : '清风记账本',
-				collapsible: true,
-				html : '<br><center><font size = 6>清风记账本</font></center>',
-				region: 'north',//指定子面板所在区域为north
-				height: 120,
-				bbar :[
-				'欢迎您：',
-						{
-						 id:'BA',text:uname+" 您好",
-	                	 handler: function(){ Ext.Msg.alert("欢迎",uname+"：欢迎您使用清风记账本"); } 
-						},
-						'->',
-						 {  
-						 id:'CB',text:"请用给你的gmail用户登录!",iconCls:'login',
-		                 handler: function(){  
-		                 	 window.location.href="<%= userService.createLoginURL(request.getRequestURI()) %>";
-		                 	 } 
-						 }
-					]
-			},{
-				title : '功能菜单',
-				items : menu,
-				split:true,
-				collapsible: true,
-				region:'west',//指定子面板所在区域为west
-				width: 155
-			},{
-				title: '系统说明',
-				contentEl : 'aboutDiv',
-				collapsible: true,
-				id : 'mainContent',
-				region:'center'//指定子面板所在区域为center
-			},{
-				title: '首页广告',
-				contentEl : 'aboutDiv2',
-				collapsible: true,
-				width:150,
-				//id : 'mainContent',
-				region:'east'//指定子面板所在区域为center
-			}]
-		});
+			new Ext.Viewport({
+				title : 'Ext.Viewport示例',
+				layout:'border',//表格布局
+				items: [{
+					title : '清风记账本',
+					collapsible: true,
+					html : '<br><center><font size = 6>清风记账本</font></center>',
+					region: 'north',//指定子面板所在区域为north
+					height: 120,
+					bbar :[
+					'欢迎您：',
+							{
+							 id:'BA',text:uname+" 您好",
+		                	 handler: function(){ Ext.Msg.alert("欢迎",uname+"：欢迎您使用清风记账本"); } 
+							},
+							'->',
+							 {  
+							 id:'CB',text:"请用给你的gmail用户登录!",iconCls:'login',
+			                 handler: function(){  
+			                 	 window.location.href="<%= userService.createLoginURL(request.getRequestURI()) %>";
+			                 	 } 
+							 }
+						]
+				},{
+					title : '功能菜单',
+					items : menu,
+					split:true,
+					collapsible: true,
+					region:'west',//指定子面板所在区域为west
+					width: 155
+				},{
+					title: '系统说明',
+					contentEl : 'aboutDiv',
+					collapsible: true,
+					id : 'mainContent',
+					region:'center'//指定子面板所在区域为center
+				},{
+					title: '首页广告',
+					contentEl : 'aboutDiv2',
+					collapsible: true,
+					width:150,
+					//id : 'mainContent',
+					region:'east'//指定子面板所在区域为center
+				}]
+			});
 		}else{
-		new Ext.Viewport({
-			title : 'Ext.Viewport示例',
-			layout:'border',//表格布局
-			items: [{
-				title : '清风记账本',
-				collapsible: true,
-				html : '<br><center><font size = 6>清风记账本</font></center>',
-				region: 'north',//指定子面板所在区域为north
-				width:130,
-				bbar :[
-				'欢迎您：',
-						{
-						 id:'BA',text:uname+" 您好",
-	                	 handler: function(){ Ext.Msg.alert("欢迎",uname+"：欢迎您使用清风记账本"); } 
-						},
-						'->',
-						{  
-						 id:'BB',text:"退出系统",iconCls:'logout',
-		                 handler: function(){
-							
-		                 	 window.location.href="<%= userService.createLogoutURL(request.getRequestURI()) %>";
-		                 	 } 
-						 }
-					]
-			},{
-				title : '功能菜单',
-				items : menu,
-				split:true,
-				collapsible: true,
-				region:'west',//指定子面板所在区域为west
-				width: 155
-			},{
-				title: '系统说明',
-				contentEl : 'aboutDiv',
-				collapsible: true,
-				id : 'mainContent',
-				region:'center'//指定子面板所在区域为center
-			},{
-				title: '首页广告',
-				contentEl : 'aboutDiv2',
-				collapsible: true,
-				width:150,
-				//id : 'mainContent',
-				region:'east'//指定子面板所在区域为center
-			}]
-		});
+			new Ext.Viewport({
+				title : 'Ext.Viewport示例',
+				layout:'border',//表格布局
+				items: [{
+					title : '清风记账本',
+					collapsible: true,
+					html : '<br><center><font size = 6>清风记账本</font></center>',
+					region: 'north',//指定子面板所在区域为north
+					width:130,
+					bbar :[
+					'欢迎您：',
+							{
+							 id:'BA',text:uname+" 您好",
+		                	 handler: function(){ Ext.Msg.alert("欢迎",uname+"：欢迎您使用清风记账本"); } 
+							},
+							'->',
+							{  
+							 id:'BB',text:"退出系统",iconCls:'logout',
+			                 handler: function(){
+								
+			                 	 window.location.href="<%= userService.createLogoutURL(request.getRequestURI()) %>";
+			                 	 } 
+							 }
+						]
+				},{
+					title : '功能菜单',
+					items : menu,
+					split:true,
+					collapsible: true,
+					region:'west',//指定子面板所在区域为west
+					width: 155
+				},{
+					title: '系统说明',
+					contentEl : 'aboutDiv',
+					collapsible: true,
+					id : 'mainContent',
+					region:'center'//指定子面板所在区域为center
+				},{
+					title: '首页广告',
+					contentEl : 'aboutDiv2',
+					collapsible: true,
+					width:150,
+					//id : 'mainContent',
+					region:'east'//指定子面板所在区域为center
+				}]
+			});
 		
 		}
 		var mainPanel = Ext.getCmp('mainContent');
@@ -296,6 +296,7 @@
 
 <div id='aboutDiv' style='height:96%;width:70%'>
 <div style="width: 735px; height: 500px; overflow: auto;font-size:13px;" align=left>
+<%if (user != null) { %>
 		<p>这是一个个人/家庭财务在线记账系统:</p>
 		<p>　　此系统适合于个人和家庭的收入和支出的具体管理，能合理的利用系统来完成查找和了解个人和家庭的收支情况。从而使您的生活更加合理的花费和管理自己的财务！<input type="hidden"  name="uname" id="uname" value="<%=userName %>"/> </p>
 		<p>功能介绍：</p>
@@ -311,7 +312,13 @@
 		<p><font color="red">　数据分析管理功能介绍:</font></p>
 		<p>　　１）：财务状态数据分析：您可以选择日期段来统计您的收入，支出，以及结余（收入前去支出)三项记录</p>
 		<p>　　２）：图形分析：你可以选择日期段来统计分析您的消费（支出）情况。</p>
-		
+<%} else { %>		
+	<script type="text/javascript">
+	    //window.location.target = 'mainContent';
+	    //window.parent.mainContent.location.href="analysis.do?method=showCountListChart";
+	    Ext.get('node8')
+	</script>
+<%} %>
 		<p><input type="hidden" name="uname" id="uname" value="<%=userName %>"/> </p>  
 		
 		</div>

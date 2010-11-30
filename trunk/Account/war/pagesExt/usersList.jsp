@@ -55,10 +55,10 @@
 				}),//表格行号组件
 				cb,
 				{header: "编号", width: 80, dataIndex: 'id', sortable: true},
-				{header: "邮箱", width: 180, dataIndex: 'email', sortable: true},
-				{header: "登录次数", width: 180, dataIndex: 'loginNum', sortable: true},
-				{header: "创建时间", width: 280, dataIndex: 'createDate', sortable: true},
-				{header: "最后一次登录时间", width: 280, dataIndex: 'lastLoginTime', sortable: true}
+				{header: "邮箱", width: 80, dataIndex: 'email', sortable: true},
+				{header: "登录次数", width: 80, dataIndex: 'loginNum', sortable: true},
+				{header: "创建时间", width: 180, dataIndex: 'createDate', sortable: true},
+				{header: "最后一次登录时间", width: 180, dataIndex: 'lastLoginTime', sortable: true}
 			],
 			 bbar: new Ext.PagingToolbar({
 		        pageSize: 15,  
