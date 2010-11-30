@@ -44,13 +44,22 @@
     User user = userService.getCurrentUser();
     //每页条数
     int count = 20;
+    String isAdmin = "false";
     if (user != null) {
     	userName = user.getEmail();
     	//插入用户表
     	 com.scholers.account.util.ComUtil.addUser();
+    	//管理员
+    	 if("scholers@gmail.com".equals(user.getEmail())) {
+    			isAdmin = "true";
+    	}
     }
+    
+    
+	
 %>
 <script type="text/javascript">
+	var isAdmin = '<%=isAdmin%>';
 	Ext.onReady(function(){
 	   
 		Ext.BLANK_IMAGE_URL = 'pagesExt/extjs3.3/resources/images/default/s.gif';
@@ -135,7 +144,7 @@
 		});
 		
 		//判断是否为管理员
-		if(uname=="scholers@gmail.com"){
+		if(isAdmin == 'true'){
 			var root3 = new Ext.tree.TreeNode({
 				text : '用户列表',
 				url : 'pagesExt/about.jsp', 
@@ -222,6 +231,13 @@
 				collapsible: true,
 				id : 'mainContent',
 				region:'center'//指定子面板所在区域为center
+			},{
+				title: '首页广告',
+				contentEl : 'aboutDiv2',
+				collapsible: true,
+				width:150,
+				//id : 'mainContent',
+				region:'east'//指定子面板所在区域为center
 			}]
 		});
 		}else{
@@ -233,7 +249,7 @@
 				collapsible: true,
 				html : '<br><center><font size = 6>清风记账本</font></center>',
 				region: 'north',//指定子面板所在区域为north
-				height: 120,
+				width:130,
 				bbar :[
 				'欢迎您：',
 						{
@@ -262,6 +278,13 @@
 				collapsible: true,
 				id : 'mainContent',
 				region:'center'//指定子面板所在区域为center
+			},{
+				title: '首页广告',
+				contentEl : 'aboutDiv2',
+				collapsible: true,
+				width:150,
+				//id : 'mainContent',
+				region:'east'//指定子面板所在区域为center
 			}]
 		});
 		
@@ -269,18 +292,14 @@
 		var mainPanel = Ext.getCmp('mainContent');
 	});
 </script>
-<%//} %>
 <body>
 
-<div id='aboutDiv' style='height:96%;width:100%'>
-<td><table cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="width:290px;border: 1px solid #E6E6E6;"><tr><td rowspan="2" align="center"><div style="margin:5px auto; width: 80px;height:80px;"><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnddh2gw4Q%3D%3D&p=mm_24002873_0_0&n=12" style="width: 80px; margin:0px;padding:0px;height: 80px; overflow:hidden;"><img style="margin:0px;border:none;" src="http://image.taobao.com/bao/uploaded/http://img04.taobaocdn.com/bao/uploaded/i4/T1celLXkJKXXaC_XZ1_040126.jpg_sum.jpg"></a></div><div class="clearing"></div></td><td colspan="2" ><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnddh2gw4Q%3D%3D&p=mm_24002873_0_0&n=12" style="height:40px;width:180px;margin:5px;line-height:20px;color:#0000FF">SHOPZOOM black label品牌 秋冬新款 男士水洗褶皱牛仔裤[K2037]</a></td></tr><tr><td nowrap="nowrap" > <span style="font-weight:600;margin:5px;line-height:30px;color:#CC0000;">168.0元</span>&nbsp;</td><td nowrap="nowrap" width="100px" ><a target="_blank"href="http://s.click.taobao.com/t_1?i=oBClBnddh2gw4Q%3D%3D&p=mm_24002873_0_0&n=12"><img name="" style="margin:0px; pandding:0px;line-height:24px;vertical-align: text-bottom;border:none;" src="http://img.alimama.cn/images/tbk/cps/fgetccode_btn.gif"></a></td></tr></table>
-    	</td>
-    	<td><table cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="width:290px;border: 1px solid #E6E6E6;"><tr><td rowspan="2" align="center"><div style="margin:5px auto; width: 80px;height:80px;"><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12" style="width: 80px; margin:0px;padding:0px;height: 80px; overflow:hidden;"><img style="margin:0px;border:none;" src="http://image.taobao.com/bao/uploaded/http://img01.taobaocdn.com/bao/uploaded/i1/T1A9lNXfdXXXXneM39_103518.jpg_sum.jpg"></a></div><div class="clearing"></div></td><td colspan="2" ><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12" style="height:40px;width:180px;margin:5px;line-height:20px;color:#0000FF">SHOPZOOM2010秋冬新款 男装 活性水洗 纯棉 直筒牛仔裤子[K2050]</a></td></tr><tr><td nowrap="nowrap" > <span style="font-weight:600;margin:5px;line-height:30px;color:#CC0000;">198.0元</span>&nbsp;</td><td nowrap="nowrap" width="100px" ><a target="_blank"href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12"><img name="" style="margin:0px; pandding:0px;line-height:24px;vertical-align: text-bottom;border:none;" src="http://img.alimama.cn/images/tbk/cps/fgetccode_btn.gif"></a></td></tr></table></td>
-		<div style="width: 735px; height: 500px; overflow: auto;font-size:13px;" align=left>
-		<p>这是一个个人/家庭财务B/S OA系统:</p>
+<div id='aboutDiv' style='height:96%;width:70%'>
+<div style="width: 735px; height: 500px; overflow: auto;font-size:13px;" align=left>
+		<p>这是一个个人/家庭财务在线记账系统:</p>
 		<p>　　此系统适合于个人和家庭的收入和支出的具体管理，能合理的利用系统来完成查找和了解个人和家庭的收支情况。从而使您的生活更加合理的花费和管理自己的财务！<input type="hidden"  name="uname" id="uname" value="<%=userName %>"/> </p>
 		<p>功能介绍：</p>
-		<p>此系统目前有:１,个人/家庭收入管理；２,个人/家庭支出管理,</p>
+		<p>此系统目前有:１,个人/家庭收入管理；２,个人/家庭支出管理,3,数据分析管理</p>
 		<p><font color="red">　个人/家庭收入管理功能介绍:</font></p>
 		<p>　　１）：收入类型管理：您可以根据自己的需要进行添加和修改删除收入类型，如：工资收入,奖金收入,其他收入...</p>
 		<p>　　２）：收入管理：您可以根据自己的需要进行添加修改和删除收入,在收入中添加的时候可以根据时间情况选择您的收入类型。</p>
@@ -289,12 +308,24 @@
 		<p>　　１）：支出类型管理：您可以根据自己的需要进行添加和修改删除支出类型，如：吃饭,日常用品,小吃...</p>
 		<p>　　２）：支出管理：您可以根据自己的需要进行添加修改和删除支出,在支出中添加的时候可以根据时间情况选择您的收入类型。</p>
 		<p>　　　１：您还可以进行查询本月的总支出情况</p>
+		<p><font color="red">　数据分析管理功能介绍:</font></p>
+		<p>　　１）：财务状态数据分析：您可以选择日期段来统计您的收入，支出，以及结余（收入前去支出)三项记录</p>
+		<p>　　２）：图形分析：你可以选择日期段来统计分析您的消费（支出）情况。</p>
+		
 		<p><input type="hidden" name="uname" id="uname" value="<%=userName %>"/> </p>  
 		
 		</div>
   <script type="text/javascript" src="http://js.tongji.linezing.com/2145929/tongji.js"></script><noscript><a href="http://www.linezing.com"><img src="http://img.tongji.linezing.com/2145929/tongji.gif"/></a></noscript>
 		
 </div>
-
+<div id='aboutDiv2' style='height:96%;width:30%'>
+<table>
+<tr>
+<td><table cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="width:290px;border: 1px solid #E6E6E6;"><tr><td rowspan="2" align="center"><div style="margin:5px auto; width: 80px;height:80px;"><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnddh2gw4Q%3D%3D&p=mm_24002873_0_0&n=12" style="width: 80px; margin:0px;padding:0px;height: 80px; overflow:hidden;"><img style="margin:0px;border:none;" src="http://image.taobao.com/bao/uploaded/http://img04.taobaocdn.com/bao/uploaded/i4/T1celLXkJKXXaC_XZ1_040126.jpg_sum.jpg"></a></div><div class="clearing"></div></td><td colspan="2" ><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnddh2gw4Q%3D%3D&p=mm_24002873_0_0&n=12" style="height:40px;width:180px;margin:5px;line-height:20px;color:#0000FF">SHOPZOOM black label品牌 秋冬新款 男士水洗褶皱牛仔裤[K2037]</a></td></tr><tr><td nowrap="nowrap" > <span style="font-weight:600;margin:5px;line-height:30px;color:#CC0000;">168.0元</span>&nbsp;</td><td nowrap="nowrap" width="100px" ><a target="_blank"href="http://s.click.taobao.com/t_1?i=oBClBnddh2gw4Q%3D%3D&p=mm_24002873_0_0&n=12"><img name="" style="margin:0px; pandding:0px;line-height:24px;vertical-align: text-bottom;border:none;" src="http://img.alimama.cn/images/tbk/cps/fgetccode_btn.gif"></a></td></tr></table>
+    	</td></tr>
+<tr>
+    	<td><table cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="width:290px;border: 1px solid #E6E6E6;"><tr><td rowspan="2" align="center"><div style="margin:5px auto; width: 80px;height:80px;"><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12" style="width: 80px; margin:0px;padding:0px;height: 80px; overflow:hidden;"><img style="margin:0px;border:none;" src="http://image.taobao.com/bao/uploaded/http://img01.taobaocdn.com/bao/uploaded/i1/T1A9lNXfdXXXXneM39_103518.jpg_sum.jpg"></a></div><div class="clearing"></div></td><td colspan="2" ><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12" style="height:40px;width:180px;margin:5px;line-height:20px;color:#0000FF">SHOPZOOM2010秋冬新款 男装 活性水洗 纯棉 直筒牛仔裤子[K2050]</a></td></tr><tr><td nowrap="nowrap" > <span style="font-weight:600;margin:5px;line-height:30px;color:#CC0000;">198.0元</span>&nbsp;</td><td nowrap="nowrap" width="100px" ><a target="_blank"href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12"><img name="" style="margin:0px; pandding:0px;line-height:24px;vertical-align: text-bottom;border:none;" src="http://img.alimama.cn/images/tbk/cps/fgetccode_btn.gif"></a></td></tr></table></td>
+	</tr></table>	
+</div>
 </body>
 </html>
