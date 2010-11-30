@@ -31,7 +31,7 @@
     	//InService inService = new InService();
     	sumPayY = ComUtil.getBigDecimal(inService.getSumInY(user.getEmail()));
     }
-
+    String strFirstMonDate =  ComUtil.getForDate(ComUtil.getCurYearAndDate());
     %>
 <html>
 <head>
@@ -62,7 +62,7 @@ var dftDate = '<%=strCurDate%>';
 			])
 			),
 			proxy : new Ext.data.HttpProxy({
-				url : 'bookext.do?method=getBookList'
+				url : 'inext.do?method=getBookList'
 			})
 		})
 		//创建工具栏组件
@@ -84,7 +84,8 @@ var dftDate = '<%=strCurDate%>';
 				blankText : '不能为空',
 				id : 'times',
 				name : 'times',
-				
+				value : '<%=strFirstMonDate%>',
+				editable : false,//禁止编辑
 				format:'Y-m-d'
              },
              new Ext.Toolbar.TextItem('结束日期：'),
@@ -96,7 +97,7 @@ var dftDate = '<%=strCurDate%>';
  				blankText : '不能为空',
  				id : 'times2',
  				name : 'times2',
- 				
+ 				editable : false,//禁止编辑
  				format:'Y-m-d'
               },
              '-', 
@@ -204,7 +205,7 @@ var dftDate = '<%=strCurDate%>';
 						])
 						),
 						proxy : new Ext.data.HttpProxy({
-							url : 'bookext.do?method=getBookTypeList'
+							url : 'inext.do?method=getBookTypeList'
 						})
 					}),//设置数据源
 					allQuery:'allbook',//查询全部信息的查询字符串
@@ -320,7 +321,7 @@ var dftDate = '<%=strCurDate%>';
 				msg:'正在删除收入信息请稍后......'
 			});
 			Ext.Ajax.request({
-				url : 'bookext.do?method=deleteBooks',
+				url : 'inext.do?method=deleteBooks',
 				params : {bookIds : bookIds},
 				method : 'POST',
 				success : function(response,options){
@@ -352,7 +353,7 @@ var dftDate = '<%=strCurDate%>';
 			   
 				//waitMsg : '正在加载数据请稍后',//提示信息
 				waitTitle : '提示',//标题
-				url : 'bookext.do?method=getBookById',//请求的url地址
+				url : 'inext.do?method=getBookById',//请求的url地址
 				params : {bookId:bookId},
 				method:'GET',//请求方式
 				success:function(form,action){//加载成功的处理函数
@@ -372,7 +373,7 @@ var dftDate = '<%=strCurDate%>';
 					clientValidation:true,//进行客户端验证
 					waitMsg : '正在提交数据请稍后',//提示信息
 					waitTitle : '提示',//标题
-					url : 'bookext.do?method=addBook',//请求的url地址
+					url : 'inext.do?method=addBook',//请求的url地址
 					method:'POST',//请求方式
 					success:function(form,action){//加载成功的处理函数
 						win.hide();
@@ -389,7 +390,7 @@ var dftDate = '<%=strCurDate%>';
 					clientValidation:true,//进行客户端验证
 					waitMsg : '正在提交数据请稍后',//提示信息
 					waitTitle : '提示',//标题
-					url : 'bookext.do?method=modifyBook',//请求的url地址
+					url : 'inext.do?method=modifyBook',//请求的url地址
 					method:'POST',//请求方式
 					success:function(form,action){//加载成功的处理函数
 						win.hide();

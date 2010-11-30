@@ -17,16 +17,16 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Pay;
 import com.scholers.account.bean.PayType;
-import com.scholers.account.business.impl.PayService;
+import com.scholers.account.business.PayServicesIntf;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
 public class PayActionExt extends DispatchAction {
-	private PayService payService ;
+	private PayServicesIntf payService ;
 
 
 
-	public void setPayService(PayService payService) {
+	public void setPayService(PayServicesIntf payService) {
 		this.payService = payService;
 	}
 
@@ -69,6 +69,10 @@ public class PayActionExt extends DispatchAction {
 		request.getSession().setAttribute("sumPayY", sumPayY);
 		//开始日期
 		String times =request.getParameter("dd");
+		//指定默认日期为本月初的日期
+		if(times == null || times.equals("")) {
+			times = ComUtil.getForDate(ComUtil.getCurYearAndDate());
+		}
 		//结束日期
 		String endtime =request.getParameter("endtime");
 		List<Pay> payListRtn = null;
