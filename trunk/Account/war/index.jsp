@@ -72,11 +72,11 @@
 		
 		var node1 = new Ext.tree.TreeNode({
 			text : '收入类型管理',
-			url : 'bookext.do?method=showBookTypeList'
+			url : 'inext.do?method=showBookTypeList'
 		});
 		var node2 = new Ext.tree.TreeNode({
 			text : '收入管理',
-			url : 'bookext.do?method=showBookList'       
+			url : 'inext.do?method=showBookList'       
 		});
 		
 		

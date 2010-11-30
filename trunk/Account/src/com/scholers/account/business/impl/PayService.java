@@ -12,12 +12,17 @@ import javax.jdo.Query;
 
 import com.scholers.account.bean.Pay;
 import com.scholers.account.bean.PayType;
+import com.scholers.account.business.PayServicesIntf;
 import com.scholers.account.dao.PMF;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.PayTypeSingle;
 
-
-public class PayService {
+/**
+ * 
+ * @author weique.lqf
+ *
+ */
+public class PayService implements PayServicesIntf {
 	//private PayDao dao = new PayDao();
 
 	public List<PayType> getPayTypes(String email) {

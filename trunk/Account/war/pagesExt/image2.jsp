@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ page import="com.scholers.account.util.ComUtil" %>
 <html>
+  <%
+    java.util.Date date = new java.util.Date();
+    String strCurDate =  ComUtil.getForDate(date);
+ %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户列表</title>

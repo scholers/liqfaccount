@@ -22,7 +22,7 @@
 			])
 			),
 			proxy : new Ext.data.HttpProxy({
-				url : 'bookext.do?method=getBookTypeList'
+				url : 'inext.do?method=getBookTypeList'
 			})
 		})
 		//创建工具栏组件
@@ -159,7 +159,7 @@
 				msg:'正在删除收入类型信息请稍后......'
 			});
 			Ext.Ajax.request({
-				url : 'bookext.do?method=deleteBookType',
+				url : 'inext.do?method=deleteBookType',
 				params : {bookTypeId : bookTypeId},
 				method : 'POST',
 				success : function(response,options){
@@ -188,7 +188,7 @@
 			bookTypeForm.form.load({
 				waitMsg : '正在加载数据请稍后',//提示信息
 				waitTitle : '提示',//标题
-				url : 'bookext.do?method=getBookTypeById',//请求的url地址
+				url : 'inext.do?method=getBookTypeById',//请求的url地址
 				params : {bookTypeId:bookTypeId},
 				method:'GET',//请求方式
 				success:function(form,action){//加载成功的处理函数
@@ -208,7 +208,7 @@
 					clientValidation:true,//进行客户端验证
 					waitMsg : '正在提交数据请稍后',//提示信息
 					waitTitle : '提示',//标题
-					url : 'bookext.do?method=addBookType',//请求的url地址
+					url : 'inext.do?method=addBookType',//请求的url地址
 					method:'POST',//请求方式
 					success:function(form,action){//加载成功的处理函数
 						win.hide();
@@ -225,7 +225,7 @@
 					clientValidation:true,//进行客户端验证
 					waitMsg : '正在提交数据请稍后',//提示信息
 					waitTitle : '提示',//标题
-					url : 'bookext.do?method=modifyBookType',//请求的url地址
+					url : 'inext.do?method=modifyBookType',//请求的url地址
 					method:'POST',//请求方式
 					success:function(form,action){//加载成功的处理函数
 						win.hide();

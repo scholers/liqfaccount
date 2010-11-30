@@ -16,7 +16,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Users;
-import com.scholers.account.business.impl.UsersService;
+import com.scholers.account.business.UsersServicesIntf;
 import com.scholers.account.util.ExtHelper;
 
 
@@ -27,11 +27,11 @@ import com.scholers.account.util.ExtHelper;
  *
  */
 public class UsersActionExt extends DispatchAction{ 
-	   private UsersService   usersService;
+	   private UsersServicesIntf   usersService;
 	
 
 
-	public void setUsersService(UsersService usersService) {
+	public void setUsersService(UsersServicesIntf usersService) {
 		this.usersService = usersService;
 	}
 

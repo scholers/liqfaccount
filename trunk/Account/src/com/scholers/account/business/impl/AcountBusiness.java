@@ -5,20 +5,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+
+import org.springframework.beans.BeanUtils;
 
 import com.google.appengine.api.users.User;
 import com.scholers.account.bean.Book;
 import com.scholers.account.bean.CountBean;
 import com.scholers.account.bean.Pay;
+import com.scholers.account.business.AccountIntf;
 import com.scholers.account.dao.PMF;
 import com.scholers.account.util.ComUtil;
 
-public class AcountBusiness {
-
+public class AcountBusiness implements AccountIntf {
 
 	/**
 	 * 保存
@@ -34,14 +41,17 @@ public class AcountBusiness {
 		}
 	}
 
-/**
- * 	 * 查询
-	 * 支持分页
- * @param startNum 起始数目
- * @param endNum 结束数目
- * @param user 当前用户信息
- * @return
- */
+	/**
+	 * * 查询 支持分页
+	 * 
+	 * @param startNum
+	 *            起始数目
+	 * @param endNum
+	 *            结束数目
+	 * @param user
+	 *            当前用户信息
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Pay> qryAccount(int startNum, int endNum, User user) {
 		if (startNum > endNum) {
@@ -54,15 +64,15 @@ public class AcountBusiness {
 		try {
 			List<Pay> accountList = null;
 			pm.setDetachAllOnCommit(true);
-			
-            String queryTemplate = "",filter="";  
-            String username = user.getEmail();
-            queryTemplate = "email == \"%s\" ";  
-            filter = String.format(queryTemplate, username);  
-			query = pm.newQuery(Pay.class,filter);  
+
+			String queryTemplate = "", filter = "";
+			String username = user.getEmail();
+			queryTemplate = "email == \"%s\" ";
+			filter = String.format(queryTemplate, username);
+			query = pm.newQuery(Pay.class, filter);
 			query.setOrdering("useDate desc");
 			accountList = (List<Pay>) query.execute();
-			
+
 			// 管理员
 			if (!user.getEmail().equals("scholers@gmail.com")) {
 				for (Pay tempBean : accountList) {
@@ -86,8 +96,8 @@ public class AcountBusiness {
 			} else {
 				return new ArrayList<Pay>();
 			}
-		 } catch (RuntimeException e) {  
-	            e.printStackTrace();  
+		} catch (RuntimeException e) {
+			e.printStackTrace();
 		} finally {
 			query.closeAll();
 			pm.close();
@@ -147,8 +157,7 @@ public class AcountBusiness {
 		}
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			Pay accBean = pm
-					.getObjectById(Pay.class, accountId);
+			Pay accBean = pm.getObjectById(Pay.class, accountId);
 			pm.deletePersistent(accBean);
 		} finally {
 			pm.close();
@@ -163,12 +172,11 @@ public class AcountBusiness {
 	public void updateAccount(Pay accBean) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			Pay e = pm.getObjectById(Pay.class, accBean
-					.getId());
+			Pay e = pm.getObjectById(Pay.class, accBean.getId());
 			// if (titleChangeIsAuthorized(e, newTitle) {
-			//e.setContent(accBean.getNotes());
-			//e.setSueAmt(accBean.getSueAmt());
-			//e.setNotes(accBean.getContent());
+			// e.setContent(accBean.getNotes());
+			// e.setSueAmt(accBean.getSueAmt());
+			// e.setNotes(accBean.getContent());
 			// } else {
 			// throw new UnauthorizedTitleChangeException(e, newTitle);
 			// }
@@ -176,87 +184,95 @@ public class AcountBusiness {
 			pm.close();
 		}
 	}
-	
-	
+
 	/**
 	 * 按时间查询支出
-	 * @param startNum 起始记录数
-	 * @param endNum 截止记录数
-	 * @param email 用户email
-	 * @param times 时间
+	 * 
+	 * @param startNum
+	 *            起始记录数
+	 * @param endNum
+	 *            截止记录数
+	 * @param email
+	 *            用户email
+	 * @param times
+	 *            时间
 	 * @return
 	 */
-	public CountBean getPayByTimeAll(String email, String times, String times2) {
+	public List<CountBean> getPayByTimeAll(String email, String times,
+			String times2, boolean isPayType) {
 		if (email == null || email.equals("")) {
 			return null;
 		}
 		CountBean tolPay = new CountBean();
 		List<Pay> accountList2 = new ArrayList<Pay>();
+		List<CountBean> rtnList = new ArrayList<CountBean>();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = null;
 		try {
 			List<Pay> accountList = null;
 			pm.setDetachAllOnCommit(true);
-			
+
 			String queryTemplate = "", filter = "";
 			queryTemplate = "email == \"%s\" ";
-			//开始日期
-			if(times != null && !times.equals("")) {
+			// 开始日期
+			if (times != null && !times.equals("")) {
 				queryTemplate += "&& useDate >= today";
-			} 
-			//结束日期
-			if(times2 != null && !times2.equals("")) {
+			}
+			// 结束日期
+			if (times2 != null && !times2.equals("")) {
 				queryTemplate += " && useDate <= today2";
 			}
 			filter = String.format(queryTemplate, email);
 			query = pm.newQuery(Pay.class, filter);
-			if(times != null && !times.equals("")
-					&& times2 != null && !times2.equals("")) {
-				query.declareImports("import java.util.Date"); 
-				//开始日期
-				query.declareParameters("Date today, Date today2"); 
-				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
-				Date today = null; 
-				try {   
-					today = format1.parse(times);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				} 
-				//结束日期
-				Date today2 = null; 
-				try {   
-					today2 = format1.parse(times2);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				} 
+			
+			if (times != null && !times.equals("") && times2 != null
+					&& !times2.equals("")) {
+				query.declareImports("import java.util.Date");
+				// 开始日期
+				query.declareParameters("Date today, Date today2");
+				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date today = null;
+				try {
+					today = format1.parse(times);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				// 结束日期
+				Date today2 = null;
+				try {
+					today2 = format1.parse(times2);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				query.setOrdering("useDate desc,id desc");
+
 				accountList = (List<Pay>) query.executeWithArray(today, today2);
-				
-			} else if(times != null && !times.equals("")
+
+			} else if (times != null && !times.equals("")
 					&& (times2 == null || times2.equals(""))) {
-				query.declareImports("import java.util.Date"); 
-				query.declareParameters("Date today"); 
-				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
-				Date today = null; 
-				try {   
-					today = format1.parse(times);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				} 
+				query.declareImports("import java.util.Date");
+				query.declareParameters("Date today");
+				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date today = null;
+				try {
+					today = format1.parse(times);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				accountList = (List<Pay>) query.execute(today);
 			}
-			//结束日期
-			else if(times2 != null && !times2.equals("")
-					 && (times == null || times.equals(""))) {
-				query.declareImports("import java.util.Date"); 
-				query.declareParameters("Date today2"); 
-				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
-				Date today2 = null; 
-				try {   
-					today2 = format1.parse(times2);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				}   
+			// 结束日期
+			else if (times2 != null && !times2.equals("")
+					&& (times == null || times.equals(""))) {
+				query.declareImports("import java.util.Date");
+				query.declareParameters("Date today2");
+				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date today2 = null;
+				try {
+					today2 = format1.parse(times2);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				accountList = (List<Pay>) query.execute(today2);
 			} else {
 				accountList = (List<Pay>) query.execute();
@@ -269,23 +285,49 @@ public class AcountBusiness {
 				tolPay.setNotes("总支出！");
 				tolPay.setAuthor(email);
 				tolPay.setEmail(email);
-				return tolPay;
+				rtnList.add(tolPay);
+				return rtnList;
 			}
-			
-			//计算总支出
-			Float tempFloat = Float.MIN_VALUE;
-			for(Pay pay : accountList2) {
-				tempFloat = ComUtil.add(tempFloat, pay.getPrice());
+			// 设置统计
+			if (!isPayType) {
+				// 计算总支出
+				Float tempFloat = Float.MIN_VALUE;
+				for (Pay pay : accountList2) {
+					tempFloat = ComUtil.add(tempFloat, pay.getPrice());
+				}
+
+				tolPay = new CountBean();
+				tolPay.setAuthor(email);
+				tolPay.setEmail(email);
+				tolPay.setTypeName("总计");
+				tolPay.setNotes("总支出");
+				tolPay.setPrice(tempFloat);
+				rtnList.add(tolPay);
+			} else {
+				Map<Long, CountBean> tempMap = new HashMap<Long, CountBean>();
+				for (Pay pay : accountList2) {
+					tolPay = new CountBean();
+					BeanUtils.copyProperties(pay, tolPay);
+					tolPay.setAccTypeId(pay.getPayTypeId());
+					//这里手动计算
+					if(tempMap.containsKey(tolPay.getAccTypeId())) {
+						Float tempFloat = tolPay.getPrice();
+						CountBean tempBean = tempMap.get(tolPay.getAccTypeId());
+						tempBean.setPrice(ComUtil.add(tempFloat, tolPay.getPrice()));
+						tempMap.put(tolPay.getAccTypeId(), tempBean);
+					} else {
+						tempMap.put(tolPay.getAccTypeId(), tolPay);
+					}
+					
+					
+				}
+				Iterator<CountBean> it = tempMap.values().iterator();
+		        while (it.hasNext()) {
+		        	rtnList.add(it.next());
+		        }
 			}
 
-			tolPay = new CountBean();
-			tolPay.setAuthor(email);
-			tolPay.setEmail(email);
-			tolPay.setTypeName("总计");
-			tolPay.setNotes("总支出");
-			tolPay.setPrice(tempFloat);
-
-			return tolPay;
+			return rtnList;
 
 		} catch (RuntimeException e) {
 			e.printStackTrace();
@@ -293,127 +335,158 @@ public class AcountBusiness {
 			query.closeAll();
 			pm.close();
 		}
-		return tolPay;
+		return rtnList;
 	}
-	
-	
+
 	/**
 	 * 按时间查询支出
-	 * @param startNum 起始记录数
-	 * @param endNum 截止记录数
-	 * @param email 用户email
-	 * @param times 时间
+	 * 
+	 * @param startNum
+	 *            起始记录数
+	 * @param endNum
+	 *            截止记录数
+	 * @param email
+	 *            用户email
+	 * @param times
+	 *            时间
+	 * @param endtime
+	 *            结束时间
+	 * @param isInType
+	 *            是否按照类型统计
 	 * @return
 	 */
-	public CountBean getInByTimeAll(String email, String times, String times2) {
+	public List<CountBean> getInByTimeAll(String email, String times,
+			String times2, boolean isInType) {
 		if (email == null || email.equals("")) {
 			return null;
 		}
 		CountBean tolPay = new CountBean();
-		List<CountBean> payList2 = new ArrayList<CountBean>();
 		List<Book> accountList2 = new ArrayList<Book>();
+		List<CountBean> rtnList = new ArrayList<CountBean>();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = null;
 		try {
 			List<Book> accountList = null;
 			pm.setDetachAllOnCommit(true);
-			
+
 			String queryTemplate = "", filter = "";
 			queryTemplate = "email == \"%s\" ";
-			//开始日期
-			if(times != null && !times.equals("")) {
+			// 开始日期
+			if (times != null && !times.equals("")) {
 				queryTemplate += "&& useDate >= today";
-			} 
-			//结束日期
-			if(times2 != null && !times2.equals("")) {
+			}
+			// 结束日期
+			if (times2 != null && !times2.equals("")) {
 				queryTemplate += " && useDate <= today2";
 			}
 			filter = String.format(queryTemplate, email);
 			query = pm.newQuery(Book.class, filter);
-			if(times != null && !times.equals("")
-					&& times2 != null && !times2.equals("")) {
-				query.declareImports("import java.util.Date"); 
-				//开始日期
-				query.declareParameters("Date today, Date today2"); 
-				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
-				Date today = null; 
-				try {   
-					today = format1.parse(times);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				} 
-				//结束日期
-				//query.declareParameters("Date today2"); 
-				Date today2 = null; 
-				try {   
-					today2 = format1.parse(times2);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				} 
+			if (times != null && !times.equals("") && times2 != null
+					&& !times2.equals("")) {
+				query.declareImports("import java.util.Date");
+				// 开始日期
+				query.declareParameters("Date today, Date today2");
+				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date today = null;
+				try {
+					today = format1.parse(times);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				// 结束日期
+				// query.declareParameters("Date today2");
+				Date today2 = null;
+				try {
+					today2 = format1.parse(times2);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				query.setOrdering("useDate desc,id desc");
-				accountList = (List<Book>) query.executeWithArray(today, today2);
-				
-			} else if(times != null && !times.equals("")
+				accountList = (List<Book>) query
+						.executeWithArray(today, today2);
+
+			} else if (times != null && !times.equals("")
 					&& (times2 == null || times2.equals(""))) {
-				query.declareImports("import java.util.Date"); 
-				query.declareParameters("Date today"); 
-				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
-				Date today = null; 
-				try {   
-					today = format1.parse(times);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				} 
+				query.declareImports("import java.util.Date");
+				query.declareParameters("Date today");
+				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date today = null;
+				try {
+					today = format1.parse(times);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				query.setOrdering("useDate desc,id desc");
 				accountList = (List<Book>) query.execute(today);
 			}
-			//结束日期
-			else if(times2 != null && !times2.equals("")
-					 && (times == null || times.equals(""))) {
-				query.declareImports("import java.util.Date"); 
-				query.declareParameters("Date today2"); 
-				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
-				Date today2 = null; 
-				try {   
-					today2 = format1.parse(times2);  
-				} catch (ParseException e) {   
-				    e.printStackTrace();   
-				}   
-			
-				
+			// 结束日期
+			else if (times2 != null && !times2.equals("")
+					&& (times == null || times.equals(""))) {
+				query.declareImports("import java.util.Date");
+				query.declareParameters("Date today2");
+				DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				Date today2 = null;
+				try {
+					today2 = format1.parse(times2);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
 				query.setOrdering("useDate desc,id desc");
 				accountList = (List<Book>) query.execute(today2);
 			} else {
 				query.setOrdering("useDate desc,id desc");
-				//query.setOrdering("useDate desc");
+				// query.setOrdering("useDate desc");
 				accountList = (List<Book>) query.execute();
 			}
 			accountList2.addAll(accountList);
 			if (accountList2 == null || accountList2.size() == 0) {
 				tolPay = new CountBean();
-				//Float price = Float.parseFloat(tempFloat);
+				// Float price = Float.parseFloat(tempFloat);
 				tolPay.setTypeName("总计");
 				tolPay.setNotes("总收入！");
 				tolPay.setPrice(Float.MIN_VALUE);
 				tolPay.setEmail(email);
 				tolPay.setAuthor(email);
-				payList2.add(tolPay);
-				return tolPay;
+				rtnList.add(tolPay);
+				return rtnList;
 			}
-			
-			//计算总收入
-			Float tempFloat = Float.MIN_VALUE;
-			for(Book book : accountList2) {
-				tempFloat = ComUtil.add(tempFloat, book.getPrice());
+			if (!isInType) {
+				// 计算总收入
+				Float tempFloat = Float.MIN_VALUE;
+				for (Book book : accountList2) {
+					tempFloat = ComUtil.add(tempFloat, book.getPrice());
+				}
+				tolPay = new CountBean();
+				tolPay.setAuthor(email);
+				tolPay.setEmail(email);
+				tolPay.setTypeName("总计");
+				tolPay.setNotes("总收入");
+				tolPay.setPrice(tempFloat);
+				rtnList.add(tolPay);
+			} else {
+				Map<Long, CountBean> tempMap = new HashMap<Long, CountBean>();
+				for (Book book : accountList2) {
+					tolPay = new CountBean();
+					BeanUtils.copyProperties(book, tolPay);
+					tolPay.setAccTypeId(book.getBookTypeId());
+					//这里手动计算
+					if(tempMap.containsKey(tolPay.getAccTypeId())) {
+						Float tempFloat = tolPay.getPrice();
+						CountBean tempBean = tempMap.get(tolPay.getAccTypeId());
+						tempBean.setPrice(ComUtil.add(tempFloat, tolPay.getPrice()));
+						tempMap.put(tolPay.getAccTypeId(), tempBean);
+					} else {
+						tempMap.put(tolPay.getAccTypeId(), tolPay);
+					}
+					
+					
+				}
+				Iterator<CountBean> it = tempMap.values().iterator();
+		        while (it.hasNext()) {
+		        	rtnList.add(it.next());
+		        }
 			}
-			tolPay = new CountBean();
-			tolPay.setAuthor(email);
-			tolPay.setEmail(email);
-			tolPay.setTypeName("总计");
-			tolPay.setNotes("总收入");
-			tolPay.setPrice(tempFloat);
-			payList2.add(tolPay);
-			return tolPay;
 
 		} catch (RuntimeException e) {
 			e.printStackTrace();
@@ -421,6 +494,6 @@ public class AcountBusiness {
 			query.closeAll();
 			pm.close();
 		}
-		return tolPay;
+		return rtnList;
 	}
 }

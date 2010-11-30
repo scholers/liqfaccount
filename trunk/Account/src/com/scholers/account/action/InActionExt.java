@@ -18,7 +18,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Book;
 import com.scholers.account.bean.BookType;
 import com.scholers.account.bean.Users;
-import com.scholers.account.business.impl.InService;
+import com.scholers.account.business.InserviceIntf;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
@@ -32,7 +32,7 @@ public class InActionExt extends DispatchAction {
 	/**
 	 * 采用spring注入的方式
 	 */
-	private InService inService;
+	private InserviceIntf inService;
 
 	
 	/*
@@ -67,6 +67,10 @@ public class InActionExt extends DispatchAction {
 		String start = request.getParameter("start");
 		int page=Integer.valueOf(start);
 		String times = request.getParameter("dd");
+		//指定默认日期为本月初的日期
+		if(times == null || times.equals("")) {
+			times = ComUtil.getForDate(ComUtil.getCurYearAndDate());
+		}
 		//结束日期
 		String endtime =request.getParameter("endtime");
 	
@@ -109,6 +113,8 @@ public class InActionExt extends DispatchAction {
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write(xml);
 		return null;
+		
+		
 	}
 	/*
 	 * 增加收入
@@ -320,7 +326,7 @@ public class InActionExt extends DispatchAction {
 			 Users user = new Users();
 			 response.setContentType("text/json;charset=UTF-8");
 			 if(rand.equals(randCode)){
-				  user = inService.getUsers(username);  
+				  user = null;//inService.getUsers(username);  
 			 		if(user != null){
 			 			if(user.getPassword().equals(password)){
 					 		request.getSession().setAttribute("user", user);
@@ -367,7 +373,7 @@ public class InActionExt extends DispatchAction {
 		   response.sendRedirect("indexExt.jsp");
 		   return null;
 	}
-	public void setInService(InService inService) {
+	public void setInService(InserviceIntf inService) {
 		this.inService = inService;
 	}
 	

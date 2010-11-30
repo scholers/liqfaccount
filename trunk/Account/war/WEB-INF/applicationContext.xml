@@ -7,7 +7,7 @@
     <bean name="/analysis"  
         class="com.scholers.account.action.AnalysisAction">  
     </bean>  
-        <bean name="/bookext"  
+        <bean name="/inext"  
         class="com.scholers.account.action.InActionExt">  
     </bean>  
         <bean name="/payext"  

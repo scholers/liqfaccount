@@ -32,8 +32,8 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.CountBean;
-import com.scholers.account.business.impl.AcountBusiness;
-import com.scholers.account.business.impl.InService;
+import com.scholers.account.business.AccountIntf;
+import com.scholers.account.business.InserviceIntf;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
@@ -44,15 +44,15 @@ import com.scholers.account.util.ExtHelper;
  */
 public class AnalysisAction extends DispatchAction {
 	
-	private AcountBusiness acountBusiness;
-	public void setAcountBusiness(AcountBusiness acountBusiness) {
+	private AccountIntf acountBusiness;
+	public void setAcountBusiness(AccountIntf acountBusiness) {
 		this.acountBusiness = acountBusiness;
 	}
 
 
-	private  InService inService; 
+	private  InserviceIntf inService; 
 
-	public void setInService(InService inService) {
+	public void setInService(InserviceIntf inService) {
 		this.inService = inService;
 	}
 
@@ -354,14 +354,18 @@ public class AnalysisAction extends DispatchAction {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		//开始日期
-		String times =request.getParameter("dd");
+		String strStartTimes = request.getParameter("dd");
+		//指定默认日期为本月初的日期
+		if(strStartTimes == null || strStartTimes.equals("")) {
+			strStartTimes = ComUtil.getForDate(ComUtil.getCurYearAndDate());
+		}
 		//结束日期
-		String endtime =request.getParameter("endtime");
+		String strEndTimes = request.getParameter("endtime");
 		//总收入
-		CountBean countBean = acountBusiness.getInByTimeAll(user.getEmail(), times, endtime);
+		CountBean countBean = acountBusiness.getInByTimeAll(user.getEmail(), strStartTimes, strEndTimes, false).get(0);
 		countBean.setId(1L);
 		//总支出
-		CountBean countBeanPay = acountBusiness.getPayByTimeAll(user.getEmail(), times, endtime);
+		CountBean countBeanPay = acountBusiness.getPayByTimeAll(user.getEmail(), strStartTimes, strEndTimes, false).get(0);
 		countBeanPay.setId(2L);
 		//总结余
 		CountBean countBeanEnd = new CountBean();
@@ -382,9 +386,8 @@ public class AnalysisAction extends DispatchAction {
 	
 	
 	/**
-	 * 查询统计结果
-	 * 查询出来的结果形成三条记录
-	 * 分别是总收入，总支出，总结余
+	 * 查询统计结果--总消费情况
+	 * 分别是总消费
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -400,27 +403,22 @@ public class AnalysisAction extends DispatchAction {
 		User user = userService.getCurrentUser();
 		//开始日期
 		String times =request.getParameter("dd");
+		//指定默认日期为本月初的日期
+		if(times == null || times.equals("")) {
+			times = ComUtil.getForDate(ComUtil.getCurYearAndDate());
+		}
 		//结束日期
 		String endtime =request.getParameter("endtime");
 		//总收入
-		CountBean countBean = acountBusiness.getInByTimeAll(user.getEmail(), times, endtime);
-		countBean.setId(1L);
-		//总支出
-		CountBean countBeanPay = acountBusiness.getPayByTimeAll(user.getEmail(), times, endtime);
-		countBeanPay.setId(2L);
+		//List<CountBean>  = acountBusiness.getInByTimeAll(user.getEmail(), times, endtime, true);
+		//countBean.setId(1L);
+		//总消费
+		List<CountBean> payList = acountBusiness.getPayByTimeAll(user.getEmail(), times, endtime, true);
+		//countBeanPay.setId(2L);
 		//总结余
-		CountBean countBeanEnd = new CountBean();
-		countBeanEnd.setId(3L);
-		countBeanEnd.setEmail(user.getEmail());
-		countBeanEnd.setAuthor(user.getEmail());
-		countBeanEnd.setNotes("总结余");
-		countBeanEnd.setPrice(ComUtil.sub(countBean.getPrice(), countBeanPay.getPrice()));
-		List<CountBean> payListRtn = new ArrayList<CountBean>();
-		payListRtn.add(countBean);
-		payListRtn.add(countBeanPay);
-		payListRtn.add(countBeanEnd);
 		
-		String strJson = ExtHelper.getJsonFromList(payListRtn.size(), payListRtn, String.valueOf(countBeanEnd.getPrice()));
+		
+		String strJson = ExtHelper.getJsonFromList(payList.size(), payList, "");
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write(strJson);
 		return null;

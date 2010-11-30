@@ -5,10 +5,10 @@
 <struts-config>
 	<action-mappings>
 	<!-- type="com.scholers.account.action.InActionExt" 由spring接管了 -->
-		<action path="/bookext" 
+		<action path="/inext" 
 			parameter="method">
-			<forward name="bookList" path="/pagesExt/bookList.jsp" />
-			<forward name="bookTypeList" path="/pagesExt/bookTypeList.jsp" />
+			<forward name="bookList" path="/pagesExt/inList.jsp" />
+			<forward name="bookTypeList" path="/pagesExt/inTypeList.jsp" />
 			<forward name="login" path="/pagesExt/Login.jsp" />
 			<forward name="getUserName" path="/indexExt.jsp" />
 		</action>

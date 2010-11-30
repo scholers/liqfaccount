@@ -46,7 +46,7 @@ public class BookTypeSingle {
 			query = pm.newQuery(BookType.class);
 			accountList = (List<BookType>) query.execute();
 			accountList2.addAll(accountList);
-			if (accountList2 == null) {
+			if (accountList2 == null ||accountList2.isEmpty()) {
 				return new HashMap<Long, BookType>();
 			} else {
 				for (BookType bookType : accountList2) {
