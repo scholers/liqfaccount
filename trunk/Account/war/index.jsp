@@ -117,7 +117,7 @@
 		}); 
 		
 		var node7 = new Ext.tree.TreeNode({  
-			text : '财务状态数据分析',
+			text : '财务数据统计',
 			url : 'analysis.do?method=showCountList'
 			
 		});
@@ -238,6 +238,13 @@
 					width:150,
 					//id : 'mainContent',
 					region:'east'//指定子面板所在区域为center
+				},{
+					title: '声明',
+					contentEl : 'aboutDiv3',
+					collapsible: true,
+					width:150,
+					//id : 'mainContent',
+					region:'south'//指定子面板所在区域为south
 				}]
 			});
 		}else{
@@ -284,7 +291,14 @@
 					collapsible: true,
 					width:150,
 					//id : 'mainContent',
-					region:'east'//指定子面板所在区域为center
+					region:'east'//指定子面板所在区域为east
+				},{
+					title: '声明',
+					contentEl : 'aboutDiv3',
+					collapsible: true,
+					width:150,
+					//id : 'mainContent',
+					region:'south'//指定子面板所在区域为south
 				}]
 			});
 		
@@ -322,8 +336,7 @@
 		<p><input type="hidden" name="uname" id="uname" value="<%=userName %>"/> </p>  
 		
 		</div>
-  <script type="text/javascript" src="http://js.tongji.linezing.com/2145929/tongji.js"></script><noscript><a href="http://www.linezing.com"><img src="http://img.tongji.linezing.com/2145929/tongji.gif"/></a></noscript>
-		
+ 
 </div>
 <div id='aboutDiv2' style='height:96%;width:30%'>
 <table>
@@ -334,5 +347,10 @@
     	<td><table cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="width:290px;border: 1px solid #E6E6E6;"><tr><td rowspan="2" align="center"><div style="margin:5px auto; width: 80px;height:80px;"><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12" style="width: 80px; margin:0px;padding:0px;height: 80px; overflow:hidden;"><img style="margin:0px;border:none;" src="http://image.taobao.com/bao/uploaded/http://img01.taobaocdn.com/bao/uploaded/i1/T1A9lNXfdXXXXneM39_103518.jpg_sum.jpg"></a></div><div class="clearing"></div></td><td colspan="2" ><a target="_blank" href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12" style="height:40px;width:180px;margin:5px;line-height:20px;color:#0000FF">SHOPZOOM2010秋冬新款 男装 活性水洗 纯棉 直筒牛仔裤子[K2050]</a></td></tr><tr><td nowrap="nowrap" > <span style="font-weight:600;margin:5px;line-height:30px;color:#CC0000;">198.0元</span>&nbsp;</td><td nowrap="nowrap" width="100px" ><a target="_blank"href="http://s.click.taobao.com/t_1?i=oBClBnbYKi2OOA%3D%3D&p=mm_24002873_0_0&n=12"><img name="" style="margin:0px; pandding:0px;line-height:24px;vertical-align: text-bottom;border:none;" src="http://img.alimama.cn/images/tbk/cps/fgetccode_btn.gif"></a></td></tr></table></td>
 	</tr></table>	
 </div>
+<div id='aboutDiv3' style='height:96%;width:30%'> 
+
+&nbsp;CopryRight@scholers 2010
+<script type="text/javascript" src="http://js.tongji.linezing.com/2145929/tongji.js"></script><noscript><a href="http://www.linezing.com"><img src="http://img.tongji.linezing.com/2145929/tongji.gif"/></a></noscript>
+	</div>
 </body>
 </html>

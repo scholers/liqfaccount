@@ -108,7 +108,9 @@
 		//创建Grid表格组件
 		var cb = new Ext.grid.CheckboxSelectionModel()
 		var payGrid = new Ext.grid.GridPanel({
-		    height:600,
+		    //height:550,
+		    bodyStyle:'height:100%',
+			autoHeight:true,
 			applyTo : 'grid-div',
 			frame:true,
 			tbar : toolbar,
