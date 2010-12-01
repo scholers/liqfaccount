@@ -77,7 +77,7 @@
 		 
 		//创建Grid表格组件
 		var payGrid = new Ext.grid.GridPanel({
-		    height:600,
+		    height:500,
 			applyTo : 'grid-div',
 			frame:true,
 			tbar : toolbar,
@@ -92,10 +92,10 @@
 					header : '行号',
 					width : 40
 				}),//表格行号组件
-				{header: "编号", width: 80, dataIndex: 'id', sortable: true,hidden:true},
-				{header: "统计项目", width: 80, dataIndex: 'notes', sortable: true},
-				{header: "金额", width: 80, dataIndex: 'price', sortable: true, align : 'right'},
-				{header: "作者", width: 80, dataIndex: 'author', sortable: true,align : 'center'}
+				{header: "编号", width: 10, dataIndex: 'id', sortable: true,hidden:true},
+				{header: "统计项目", width: 40, dataIndex: 'notes', sortable: true,align : 'right'},
+				{header: "金额", width: 40, dataIndex: 'price', sortable: true, align : 'right'},
+				{header: "作者", width: 40, dataIndex: 'author', sortable: true,align : 'center'}
 				
 			],
 		

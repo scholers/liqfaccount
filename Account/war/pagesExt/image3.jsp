@@ -75,7 +75,7 @@ Ext.onReady(function(){
         width: 550,
         height: 400,
         tbar : toolbar,
-        title: '消费分析饼状图',
+        title: '本月消费分析饼状图',
         renderTo: 'container',
         items: {
             store: typeStore,
