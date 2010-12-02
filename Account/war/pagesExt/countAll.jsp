@@ -12,7 +12,7 @@
 	User user = userService.getCurrentUser();
 	String email = user.getEmail();
    
-	
+    String strFirstMonDate =  ComUtil.getForDate(ComUtil.getCurYearAndDate());
 	
     %>
 <html>
@@ -55,7 +55,8 @@
 				blankText : '不能为空',
 				id : 'times',
 				name : 'times',
-				
+				value : '<%=strFirstMonDate%>',
+				editable : false,//禁止编辑
 				format:'Y-m-d'
              },
              new Ext.Toolbar.TextItem('结束日期：'),
@@ -67,7 +68,7 @@
  				blankText : '不能为空',
  				id : 'times2',
  				name : 'times2',
- 				
+ 				editable : false,//禁止编辑
  				format:'Y-m-d'
               },
              '-', 
