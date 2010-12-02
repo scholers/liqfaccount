@@ -88,7 +88,7 @@ public class PayActionExt extends DispatchAction {
 	    //startNum *= count;
 	    int endNum = startNum + count;
 	    
-	    if(endNum > totalSize && totalSize != 0){
+	    if(endNum > totalSize){
 	    	endNum = totalSize;
 	    }
 		payListRtn = payService.getPayByTime(startNum, endNum, user.getEmail(), times, endtime);
@@ -173,7 +173,7 @@ public class PayActionExt extends DispatchAction {
 	}
 
 	/**
-	 * 
+	 * 增加支付类型
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -245,6 +245,15 @@ public class PayActionExt extends DispatchAction {
 		return null;
 	}
 
+	/**
+	 * 修改支付类型
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward modifyPayType(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {

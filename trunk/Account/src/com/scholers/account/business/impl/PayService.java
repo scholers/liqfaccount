@@ -290,11 +290,11 @@ public class PayService implements PayServicesIntf {
 			queryTemplate = "email == \"%s\" ";
 			//开始日期
 			if(times != null && !times.equals("")) {
-				queryTemplate += "&& useDate > today";
+				queryTemplate += "&& useDate >= today";
 			} 
 			//结束日期
 			if(times2 != null && !times2.equals("")) {
-				queryTemplate += " && useDate < today2";
+				queryTemplate += " && useDate <= today2";
 			}
 			filter = String.format(queryTemplate, email);
 			query = pm.newQuery(Pay.class, filter);
@@ -388,11 +388,11 @@ public class PayService implements PayServicesIntf {
 			queryTemplate = "email == \"%s\" ";
 			//开始日期
 			if(times != null && !times.equals("")) {
-				queryTemplate += "&& useDate > today";
+				queryTemplate += "&& useDate >= today";
 			} 
 			//结束日期
 			if(times2 != null && !times2.equals("")) {
-				queryTemplate += " && useDate < today2";
+				queryTemplate += " && useDate <= today2";
 			}
 			filter = String.format(queryTemplate, email);
 			query = pm.newQuery(Pay.class, filter);
