@@ -6,11 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -313,7 +311,7 @@ public class AcountBusiness implements AccountIntf {
 					if(tempMap.containsKey(tolPay.getAccTypeId())) {
 						Float tempFloat = tolPay.getPrice();
 						CountBean tempBean = tempMap.get(tolPay.getAccTypeId());
-						tempBean.setPrice(ComUtil.add(tempFloat, tolPay.getPrice()));
+						tempBean.setPrice(ComUtil.add(tempFloat, tempBean.getPrice()));
 						tempMap.put(tolPay.getAccTypeId(), tempBean);
 					} else {
 						tempMap.put(tolPay.getAccTypeId(), tolPay);
@@ -339,7 +337,7 @@ public class AcountBusiness implements AccountIntf {
 	}
 
 	/**
-	 * 按时间查询支出
+	 * 按时间查询收入
 	 * 
 	 * @param startNum
 	 *            起始记录数
@@ -444,7 +442,7 @@ public class AcountBusiness implements AccountIntf {
 				tolPay = new CountBean();
 				// Float price = Float.parseFloat(tempFloat);
 				tolPay.setTypeName("总计");
-				tolPay.setNotes("总收入！");
+				tolPay.setNotes("总收入");
 				tolPay.setPrice(Float.MIN_VALUE);
 				tolPay.setEmail(email);
 				tolPay.setAuthor(email);
@@ -474,7 +472,7 @@ public class AcountBusiness implements AccountIntf {
 					if(tempMap.containsKey(tolPay.getAccTypeId())) {
 						Float tempFloat = tolPay.getPrice();
 						CountBean tempBean = tempMap.get(tolPay.getAccTypeId());
-						tempBean.setPrice(ComUtil.add(tempFloat, tolPay.getPrice()));
+						tempBean.setPrice(ComUtil.add(tempFloat, tempBean.getPrice()));
 						tempMap.put(tolPay.getAccTypeId(), tempBean);
 					} else {
 						tempMap.put(tolPay.getAccTypeId(), tolPay);
