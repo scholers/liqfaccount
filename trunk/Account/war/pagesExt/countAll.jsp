@@ -72,7 +72,7 @@
  				format:'Y-m-d'
               },
              '-', 
-			{iconCls:'find',handler:onItemCheck }
+			{text : '查询',iconCls:'find',handler:onItemCheck }
 		]);  
          	     	
 		 

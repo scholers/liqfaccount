@@ -50,7 +50,7 @@ Ext.onReady(function(){
 				format:'Y-m-d'
           },
          '-', 
-		{iconCls:'find',handler:onItemCheck }
+		{text : '查询',iconCls:'find',handler:onItemCheck }
 	]);  
 	
 	typeStore.load({params:{start:0,limit:15}});
