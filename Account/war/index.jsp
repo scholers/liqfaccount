@@ -212,7 +212,7 @@
 							},
 							'->',
 							 {  
-							 id:'CB',text:"请用给你的gmail用户登录!",iconCls:'login',
+							 id:'CB',text:"<center><font color=red size=2>点击这里用gmail用户登录</font></center>",iconCls:'login',
 			                 handler: function(){  
 			                 	 window.location.href="<%= userService.createLoginURL(request.getRequestURI()) %>";
 			                 	 } 
@@ -265,7 +265,7 @@
 							},
 							'->',
 							{  
-							 id:'BB',text:"退出系统",iconCls:'logout',
+							 id:'BB',text:"<center><font color=red size=2>退出系统</font></center>",iconCls:'logout',
 			                 handler: function(){
 								
 			                 	 window.location.href="<%= userService.createLogoutURL(request.getRequestURI()) %>";
