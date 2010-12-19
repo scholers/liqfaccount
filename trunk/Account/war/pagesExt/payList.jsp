@@ -108,9 +108,9 @@
 		//创建Grid表格组件
 		var cb = new Ext.grid.CheckboxSelectionModel()
 		var payGrid = new Ext.grid.GridPanel({
-		    height:550,
-		    //bodyStyle:'height:100%',
-			//autoHeight:true,
+		    //height:500,
+		    bodyStyle:'height:100%',
+			autoHeight:true,
 			applyTo : 'grid-div',
 			frame:true,
 			tbar : toolbar,
@@ -464,6 +464,10 @@
 						var selItem = item.store.getAt(index);
 					}
 					value = selItem.get('title');
+				}
+				//日期格式化
+				else if(item.getXType() == 'datefield'){
+					value = Ext.util.Format.date(value,'Y-m-d');
 				}
 				
 				obj[item.name] = value;

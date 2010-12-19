@@ -109,7 +109,9 @@ var dftDate = '<%=strCurDate%>';
 		var cb = new Ext.grid.CheckboxSelectionModel()
 		var bookGrid = new Ext.grid.GridPanel({
 			applyTo : 'grid-div',
-			height:600,
+			//height:500,
+		    bodyStyle:'height:100%',
+			autoHeight:true,
 			frame:true,
 			tbar : toolbar,
 			store: bookStore,
@@ -432,6 +434,11 @@ var dftDate = '<%=strCurDate%>';
 					}
 					value = selItem.get('title');
 				}
+				//日期格式化
+				else if(item.getXType() == 'datefield'){
+					value = Ext.util.Format.date(value,'Y-m-d');
+				}
+				
 				obj[item.name] = value;
 			}
 			if(Ext.isEmpty(obj['id'])){
