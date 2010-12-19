@@ -38,7 +38,9 @@
 		var cb = new Ext.grid.CheckboxSelectionModel()
 		var payTypeGrid = new Ext.grid.GridPanel({
 			applyTo : 'grid-div',
-			height:600,
+			//height:500,
+		    bodyStyle:'height:100%',
+			autoHeight:true,
 			tbar : toolbar,
 			frame:true,
 			store: typeStore,

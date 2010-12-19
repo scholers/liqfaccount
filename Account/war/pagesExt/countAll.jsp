@@ -78,7 +78,9 @@
 		 
 		//创建Grid表格组件
 		var payGrid = new Ext.grid.GridPanel({
-		    height:500,
+		    //height:500,
+		    bodyStyle:'height:100%',
+			autoHeight:true,
 			applyTo : 'grid-div',
 			frame:true,
 			tbar : toolbar,
