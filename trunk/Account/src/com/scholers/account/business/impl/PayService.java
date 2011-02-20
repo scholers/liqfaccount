@@ -10,6 +10,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import org.springframework.stereotype.Component;
+
 import com.scholers.account.bean.Pay;
 import com.scholers.account.bean.PayType;
 import com.scholers.account.business.PayServicesIntf;
@@ -22,6 +24,8 @@ import com.scholers.account.util.PayTypeSingle;
  * @author weique.lqf
  *
  */
+
+@Component("payService")
 public class PayService implements PayServicesIntf {
 	//private PayDao dao = new PayDao();
 

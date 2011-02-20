@@ -58,32 +58,126 @@
     
 	
 %>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	var isAdmin = '<%=isAdmin%>';
 	Ext.onReady(function(){
-	   
+
+	 	
+		var mainTab = new Ext.TabPanel({
+			/*
+				region: "center", 
+			   id : 'mainTabPanel',
+			   renderTo:'tabs',
+			   enableTabScroll : true,
+			   closeAll : true,
+			   activeTab : 0,
+			   tabWidth : 110,
+			   minTabWidth : 120,
+			   resizeTabs : true,
+			   
+			  defaults : {
+			         autoScroll : true,
+			         height : 490
+			       }
+
+			 });*/
+			 id : 'mainTabPanel',
+			 region: "center", 
+			   renderTo:'tabs',
+		        resizeTabs:true, // turn on tab resizing
+		        minTabWidth: 115,
+		        tabWidth:135,
+		        enableTabScroll:true,
+		        width:600,
+		        height:250,
+		        defaults: {autoScroll:true},
+		        plugins: new Ext.ux.TabCloseMenu()
+		        /*
+			   //id : 'mainTabPanel',
+			  renderTo:'tabs',
+			     region : "center",
+			     enableTabScroll: true,
+			     animate : true,
+			     frame:true,
+			     activeTab : "0",
+			     defaults : {
+			         autoScroll : true,
+			         height : 490
+			       },
+			     items : [{
+			        xtype : "panel",
+			        title : "欢迎"
+			       }]*/
+			    }) //这里我定义一个欢迎的主页面，并且不能被关闭
+						 
+			/**
+			 * 向tab中添加选项卡
+
+			 * @params myId 被添加的组件id  myTitle 创建tabpanel时需要 myurl 将要加载数据的地址
+
+			 */
+			function addTab(myId, myTitle, myUrl) {
+
+				//var mainTab = Ext.getCmp('mainTabPanel');
+				
+			     var gid = Ext.getCmp(myId);
+			     if (gid != null) {
+			    	 mainTab.remove(gid.id); // 如果该选项卡面板里已有选项卡，先将其移除
+			    }
+			     mainTab.add({
+				     	id : myId,
+			            title: myTitle,
+			            iconCls: 'tabs',
+			            //html: 'Tab Body ' + myId + '<br/><br/>',
+			            autoLoad : {
+			                url : myUrl,
+			                scripts : true
+			         	},
+			            closable:true
+			        }).show();
+			        /*
+			    var tp = new Ext.TabPanel({
+			          iconCls : 'tabs',
+			          id : myId,
+			          enableTabScroll : true,
+			          html: 'Tab Body ' + (index) + '<br/><br/>' + Ext.example.bogusMarkup,
+			         closable : true,
+			         title : myTitle,
+			         autoLoad : {
+			                url : myUrl,
+			                scripts : true
+			         }
+			 	});
+			 	// 向选项卡面板里添加选项卡
+			 	mainTabPanel.add(tp).show();*/
+			}
+	     
 		Ext.BLANK_IMAGE_URL = 'pagesExt/extjs3.3/resources/images/default/s.gif';
 		//获取session用户的
 		var uname = document.getElementById("uname").value;
 		//判断添加用户的js
 		
 		var root = new Ext.tree.TreeNode({ 
+			id :"work1",
 			text : '系统说明',
 			url : 'pagesExt/about.jsp',
 			expanded : true//默认展开根节点
 		});
 		if(uname!=""){
 		var root1 = new Ext.tree.TreeNode({
+			id :"work1",
 			text : '个人/家庭收入管理',
 			url : 'pagesExt/about.jsp',
 			expanded : true//默认展开根节点
 		});
 		
 		var node1 = new Ext.tree.TreeNode({
+			id :"work3",
 			text : '收入类型管理',
 			url : 'inext.do?method=showBookTypeList'
 		});
 		var node2 = new Ext.tree.TreeNode({
+			id :"work4",
 			text : '收入管理',
 			url : 'inext.do?method=showBookList'       
 		});
@@ -93,6 +187,7 @@
 		root1.appendChild(node2);
 		
 		var root2 = new Ext.tree.TreeNode({
+			id :"work5",
 			text : '个人/家庭支出管理',
 			url : 'pagesExt/about.jsp',
 			expanded : true//默认展开根节点
@@ -100,10 +195,12 @@
 		
 		
 		var node3 = new Ext.tree.TreeNode({
+			id :"work6",
 			text : '支出类型管理',
 			url : 'payext.do?method=showPayTypeList'
 		});
 		var node4 = new Ext.tree.TreeNode({
+			id :"work7",
 			text : '支出管理',
 			url : 'payext.do?method=showPayList'
 		});
@@ -111,25 +208,30 @@
 		root2.appendChild(node4);
 		
 		var root5 = new Ext.tree.TreeNode({
+			id :"work1",
 			text : '数据分析管理',
 			url : 'pagesExt/about.jsp',
 			expanded : true//默认展开根节点
 		}); 
 		
 		var node7 = new Ext.tree.TreeNode({  
+			id :"work9",
 			text : '财务数据统计',
 			url : 'analysis.do?method=showCountList'
 			
 		});
 		var node8 = new Ext.tree.TreeNode({
+			id :"work10",
 			text : '图形分析',  
 			url : 'analysis.do?method=showCountListChart'
 		});
 		var node9 = new Ext.tree.TreeNode({
+			id :"work11",
 			text : '年收入数据分析',
 			url : 'analysis.do?method=getBookByY'
 		});
 		var node10 = new Ext.tree.TreeNode({
+			id :"work12",
 			text : '年支出数据分析',
 			url : 'analysis.do?method=getBookByYP'
 		});
@@ -139,6 +241,7 @@
 		//root5.appendChild(node10);
 		
 		var node4 = new Ext.tree.TreeNode({
+			id :"work13",
 			text : '支出管理',
 			url : 'account?operType=qry'
 		});
@@ -146,11 +249,13 @@
 		//判断是否为管理员
 		if(isAdmin == 'true'){
 			var root3 = new Ext.tree.TreeNode({
+				id :"work1",
 				text : '用户列表',
 				url : 'pagesExt/about.jsp', 
 				expanded : true//默认展开根节点
 			})
 			var node5 = new Ext.tree.TreeNode({
+				id :"work15",
 				text : '用户列表',
 				url:'usersext.do?method=showUsersList'
 			});
@@ -162,31 +267,23 @@
 		root.appendChild(root5);
 		}
 		var menu = new Ext.tree.TreePanel({
+			  id : 'tree',
+			   animate : true,
+			   autoScroll : true,
+			   containerScroll : true,
+			   lines : true,
+			   //el : 'tree'
 			border : false,
 			height:523,
 			root : root,
-			hrefTarget : 'mainContent',
+			//hrefTarget : 'mainContent',
 			listeners : {
 				click : function(node,e){
-					mainPanel.load({  
-						url:node.attributes.url,
-						callback : function(){
-							mainPanel.setTitle(node.text);
-						},
-						scripts: true
-					});
+					addTab(node.id,node.text,node.attributes.url);
 				}
 			}
 			,
-			tbar : [
-				'皮肤选择：',
-				{
-					xtype : 'themeChange',
-					width : 80,
-					listWidth : 80
-				},
-				'->'
-			],
+			
 			bbar : [
 				{
 					width : 80,
@@ -196,7 +293,7 @@
 		});
 		if(uname==""){
 			new Ext.Viewport({
-				title : 'Ext.Viewport示例',
+				title : '清风记账本',
 				layout:'border',//表格布局
 				items: [{
 					title : '清风记账本',
@@ -226,8 +323,10 @@
 					region:'west',//指定子面板所在区域为west
 					width: 155
 				},{
+			   		items : mainTab, //将欢迎界面放入到ViewPort{
+			       
 					title: '系统说明',
-					contentEl : 'aboutDiv',
+					contentEl : 'tabs',
 					collapsible: true,
 					id : 'mainContent',
 					region:'center'//指定子面板所在区域为center
@@ -236,43 +335,21 @@
 					contentEl : 'aboutDiv2',
 					collapsible: true,
 					width:150,
-					//id : 'mainContent',
 					region:'east'//指定子面板所在区域为center
 				},{
 					title: '底层广告',
 					contentEl : 'aboutDiv3',
 					collapsible: true,
 					width:150,
-					//id : 'mainContent',
 					region:'south'//指定子面板所在区域为east
 				}]
 			});
 		}else{
 			new Ext.Viewport({
-				title : 'Ext.Viewport示例',
+				title : '清风记账本',
 				layout:'border',//表格布局
 				items: [{
-					title : '清风记账本',
-					collapsible: true,
-					html : '<br><center><font size = 6>清风记账本</font></center>',
-					region: 'north',//指定子面板所在区域为north
-					width:130,
-					bbar :[
-					'欢迎您：',
-							{
-							 id:'BA',text:uname+" 您好",
-		                	 handler: function(){ Ext.Msg.alert("欢迎",uname+"：欢迎您使用清风记账本"); } 
-							},
-							'->',
-							{  
-							 id:'BB',text:"<center><font color=red size=2>退出系统</font></center>",iconCls:'logout',
-			                 handler: function(){
-								
-			                 	 window.location.href="<%= userService.createLogoutURL(request.getRequestURI()) %>";
-			                 	 } 
-							 }
-						]
-				},{
+					
 					title : '功能菜单',
 					items : menu,
 					split:true,
@@ -280,36 +357,23 @@
 					region:'west',//指定子面板所在区域为west
 					width: 155
 				},{
-					title: '系统说明',
-					contentEl : 'aboutDiv',
+					items : mainTab, 
+					title: '清风记账本',
+					contentEl : 'tabs',
 					collapsible: true,
-					id : 'mainContent',
+					//id : 'mainContent',
 					region:'center'//指定子面板所在区域为center
-				},{
-					title: '右侧广告',
-					contentEl : 'aboutDiv2',
-					collapsible: true,
-					width:150,
-					//id : 'mainContent',
-					region:'east'//指定子面板所在区域为east
-				},{
-					title: '底层广告',
-					contentEl : 'aboutDiv3',
-					collapsible: true,
-					width:150,
-					//id : 'mainContent',
-					region:'south'//指定子面板所在区域为east
 				
 				}]
 			});
 		
 		}
-		var mainPanel = Ext.getCmp('mainContent');
+		//var mainPanel = Ext.getCmp('mainContent');
 	});
-</script>
+--></script>
 <body>
-
-<div id='aboutDiv' style='height:96%;width:70%'>
+<div id="tabs22" style='height:96%;width:70%'></div>
+<div id='tabs' style='height:96%;width:70%'>
 <div style="width: 835px; height: 500px; overflow: auto;font-size:13px;" align=left>
 		<img alt="" src="/pagesExt/img1.jpg">
 		<p>这是一个个人/家庭财务在线记账系统:</p>

@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -27,13 +28,8 @@ import com.scholers.account.util.ExtHelper;
  *
  */
 public class UsersActionExt extends DispatchAction{ 
-	   private UsersServicesIntf   usersService;
-	
-
-
-	public void setUsersService(UsersServicesIntf usersService) {
-		this.usersService = usersService;
-	}
+	@Autowired
+	private UsersServicesIntf   usersService;
 
 	public ActionForward showUsersList(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)

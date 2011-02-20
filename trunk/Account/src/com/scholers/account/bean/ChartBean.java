@@ -6,6 +6,15 @@ package com.scholers.account.bean;
  *
  */
 public class ChartBean {
+	/**
+	 * 
+	 * @param typeName
+	 * @param totalY
+	 */
+	public ChartBean(String typeName, Float totalY) {
+		this.typeName = typeName;
+		this.totalY = totalY;
+	}
 	//类型
 	private String typeName;
 	//总计

@@ -9,7 +9,7 @@
 <body>
 <div class='menuDiv' style='height:96%;width:100%'>
 		<div style="width: 735px; height: 500px; overflow: auto; font-size:13px;" align=left>
-		<img alt="" src="./pagesExt/img1.jpg">
+		<img alt="" src="/pagesExt/img1.jpg">
 		<p>这是一个个人/家庭财务在线记账系统:</p>
 		<p>　　此系统适合于个人和家庭的收入和支出的具体管理，能合理的利用系统来完成查找和了解个人和家庭的收支情况。从而使您的生活更加合理的花费和管理自己的财务！</p>
 		<p>功能介绍：此系统目前有:一,个人/家庭收入管理；二,个人/家庭支出管理,三,数据分析管理</p>

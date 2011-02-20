@@ -7,7 +7,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.scholers.account.bean.Pay;
+import org.springframework.stereotype.Component;
+
 import com.scholers.account.bean.Users;
 import com.scholers.account.business.UsersServicesIntf;
 import com.scholers.account.dao.PMF;
@@ -17,6 +18,8 @@ import com.scholers.account.dao.PMF;
  * @author jill
  *
  */
+
+@Component("usersService")
 public class UsersService implements UsersServicesIntf{
 	
 	/**

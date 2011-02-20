@@ -12,6 +12,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import org.springframework.stereotype.Component;
+
 import com.scholers.account.bean.Book;
 import com.scholers.account.bean.BookType;
 import com.scholers.account.bean.Users;
@@ -28,6 +30,7 @@ import com.scholers.account.util.DBUtil;
  * @author weique.lqf
  *
  */
+@Component("inService")
 public class InService implements InserviceIntf{
 
 	/**

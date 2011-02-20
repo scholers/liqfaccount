@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -32,6 +33,7 @@ public class InActionExt extends DispatchAction {
 	/**
 	 * 采用spring注入的方式
 	 */
+	@Autowired
 	private InserviceIntf inService;
 
 	
@@ -372,9 +374,6 @@ public class InActionExt extends DispatchAction {
 		   response.getWriter().write("{username:'"+username+"'}");
 		   response.sendRedirect("indexExt.jsp");
 		   return null;
-	}
-	public void setInService(InserviceIntf inService) {
-		this.inService = inService;
 	}
 	
 	
