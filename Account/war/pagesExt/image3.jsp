@@ -8,11 +8,17 @@
  %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>用户列表</title>
+<link rel="stylesheet" type="text/css" href="pagesExt/extjs3.3/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="pagesExt/css/style.css" />
+<script type="text/javascript" src="pagesExt/extjs3.3/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="pagesExt/extjs3.3/ext-all.js"></script>
+<script type="text/javascript" src="pagesExt/extjs3.3/source/locale/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" src="pagesExt/extjs3.3/ext/themeChange.js"></script>
+<title>图形显示</title>
 </head>
 <script type="text/javascript">
 var dftDate = '<%=strCurDate%>';
-Ext.chart.Chart.CHART_URL = '../pagesExt/extjs3.3/resources/charts.swf';
+Ext.chart.Chart.CHART_URL = '/pagesExt/extjs3.3/resources/charts.swf';
 
 Ext.onReady(function(){
 	//定义数据集对象

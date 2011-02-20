@@ -27,6 +27,7 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.servlet.ServletUtilities;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -44,17 +45,11 @@ import com.scholers.account.util.ExtHelper;
  */
 public class AnalysisAction extends DispatchAction {
 	
+	@Autowired
 	private AccountIntf acountBusiness;
-	public void setAcountBusiness(AccountIntf acountBusiness) {
-		this.acountBusiness = acountBusiness;
-	}
 
-
+	@Autowired
 	private  InserviceIntf inService; 
-
-	public void setInService(InserviceIntf inService) {
-		this.inService = inService;
-	}
 
 	// 放入数据
 	private static CategoryDataset getDataSet(List a) {

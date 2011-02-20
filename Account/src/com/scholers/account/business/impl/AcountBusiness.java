@@ -14,6 +14,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import com.google.appengine.api.users.User;
 import com.scholers.account.bean.Book;
@@ -23,6 +24,7 @@ import com.scholers.account.business.AccountIntf;
 import com.scholers.account.dao.PMF;
 import com.scholers.account.util.ComUtil;
 
+@Component("acountBusiness")
 public class AcountBusiness implements AccountIntf {
 
 	/**
@@ -280,7 +282,7 @@ public class AcountBusiness implements AccountIntf {
 				tolPay = new CountBean();
 				tolPay.setTypeName("总计");
 				tolPay.setPrice(Float.MIN_VALUE);
-				tolPay.setNotes("总支出！");
+				tolPay.setNotes("总支出");
 				tolPay.setAuthor(email);
 				tolPay.setEmail(email);
 				rtnList.add(tolPay);

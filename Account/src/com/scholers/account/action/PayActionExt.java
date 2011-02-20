@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -21,14 +22,14 @@ import com.scholers.account.business.PayServicesIntf;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
+/**
+ * 
+ * @author jill
+ *
+ */
 public class PayActionExt extends DispatchAction {
+	@Autowired
 	private PayServicesIntf payService ;
-
-
-
-	public void setPayService(PayServicesIntf payService) {
-		this.payService = payService;
-	}
 
 	/*
 	 * 跳转支出页面
