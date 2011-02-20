@@ -35,6 +35,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.CountBean;
 import com.scholers.account.business.AccountIntf;
 import com.scholers.account.business.InserviceIntf;
+import com.scholers.account.business.impl.AcountBusiness;
+import com.scholers.account.business.impl.InService;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
@@ -44,12 +46,11 @@ import com.scholers.account.util.ExtHelper;
  *
  */
 public class AnalysisAction extends DispatchAction {
-	
 	@Autowired
-	private AccountIntf acountBusiness;
+	private AccountIntf acountBusiness = null;
 
-	@Autowired
-	private  InserviceIntf inService; 
+	@Autowired     
+	private  InserviceIntf inService = null; 
 
 	// 放入数据
 	private static CategoryDataset getDataSet(List a) {

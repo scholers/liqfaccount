@@ -20,6 +20,7 @@ import com.scholers.account.bean.Book;
 import com.scholers.account.bean.BookType;
 import com.scholers.account.bean.Users;
 import com.scholers.account.business.InserviceIntf;
+import com.scholers.account.business.impl.InService;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
@@ -34,9 +35,8 @@ public class InActionExt extends DispatchAction {
 	 * 采用spring注入的方式
 	 */
 	@Autowired
-	private InserviceIntf inService;
+	private InserviceIntf inService = null;
 
-	
 	/*
 	 * 显示收入类型
 	 */

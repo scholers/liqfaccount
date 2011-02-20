@@ -36,11 +36,15 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
+	<listener>
+       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- 
 	<servlet>
 		<servlet-name>context</servlet-name>
 		<servlet-class>
-			org.springframework.web.context.ContextLoaderServlet
+			org.springframework.web.context.ContextLoaderListener
 		</servlet-class>
 		<load-on-startup>0</load-on-startup>
-	</servlet>
+	</servlet> -->
 </web-app>
