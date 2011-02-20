@@ -18,6 +18,8 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Users;
 import com.scholers.account.business.UsersServicesIntf;
+import com.scholers.account.business.impl.PayService;
+import com.scholers.account.business.impl.UsersService;
 import com.scholers.account.util.ExtHelper;
 
 
@@ -28,8 +30,9 @@ import com.scholers.account.util.ExtHelper;
  *
  */
 public class UsersActionExt extends DispatchAction{ 
+
 	@Autowired
-	private UsersServicesIntf   usersService;
+	private UsersServicesIntf   usersService = null;
 
 	public ActionForward showUsersList(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)

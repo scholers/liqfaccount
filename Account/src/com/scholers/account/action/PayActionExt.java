@@ -19,6 +19,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Pay;
 import com.scholers.account.bean.PayType;
 import com.scholers.account.business.PayServicesIntf;
+import com.scholers.account.business.impl.InService;
+import com.scholers.account.business.impl.PayService;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
@@ -28,8 +30,10 @@ import com.scholers.account.util.ExtHelper;
  *
  */
 public class PayActionExt extends DispatchAction {
+
+	
 	@Autowired
-	private PayServicesIntf payService ;
+	private PayServicesIntf payService = null;
 
 	/*
 	 * 跳转支出页面
