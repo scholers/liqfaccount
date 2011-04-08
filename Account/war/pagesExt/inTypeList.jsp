@@ -64,14 +64,15 @@
 				{header: "类型说明", width: 280, dataIndex: 'detail', sortable: true}
 			],
 			 bbar: new Ext.PagingToolbar({
-		        pageSize: 10,  
+		        pageSize: 15,  
 		        store: typeStore,
 		        displayInfo: true,
 		        displayMsg: '显示第 {0} 条到 {1} 条记录，一共 {2} 条',
 		        emptyMsg: "没有记录"
 	    	})
 		});
-			typeStore.load({params:{start:0, limit:10}});
+
+		typeStore.load({params:{start:0, limit:15}});
 		//创建新增或修改收入类型信息的form表单
 		Ext.QuickTips.init();
 		Ext.form.Field.prototype.msgTarget = 'side';//统一指定错误信息提示方式

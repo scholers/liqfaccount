@@ -247,7 +247,7 @@
 						])
 						),
 						proxy : new Ext.data.HttpProxy({
-							url : 'payext.do?method=getPayTypeList'
+							url : 'payext.do?method=getPayTypeListAll'
 						})
 					}),//设置数据源
 					allQuery:'allpay',//查询全部信息的查询字符串

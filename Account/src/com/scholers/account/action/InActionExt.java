@@ -18,6 +18,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Book;
 import com.scholers.account.bean.BookType;
+import com.scholers.account.bean.PayType;
 import com.scholers.account.bean.Users;
 import com.scholers.account.business.InserviceIntf;
 import com.scholers.account.business.impl.InService;
@@ -110,7 +111,44 @@ public class InActionExt extends DispatchAction {
 	throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		List<BookType> bookTypes = inService.getBookTypes(user.getEmail());     
+		List<BookType> bookTypes = inService.getBookTypes(user.getEmail()); 
+		
+		List<BookType> bookTypesRtn = new ArrayList<BookType>();
+		
+		//分页
+		int count = 10;
+		 //总数
+	    int totalSize = bookTypes.size();
+	    int startNum = 0;
+	    if(request.getParameter("start") != null){
+	    	startNum = Integer.parseInt(request.getParameter("start"));
+	    }
+	    int endNum = startNum + count;
+	    
+	    if(endNum > totalSize){
+	    	endNum = totalSize;
+	    }
+	    
+	    bookTypesRtn.addAll(bookTypes.subList(startNum, endNum));
+		
+		String xml = ExtHelper.getJsonFromList(totalSize, bookTypesRtn, "");
+		response.setContentType("text/json;charset=UTF-8");
+		response.getWriter().write(xml);
+		return null;
+		
+		
+	}
+	
+	
+	/*
+	 * 得到所有类型列表
+	 */
+	public ActionForward getBookTypeListAll(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+	throws Exception {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		List<BookType> bookTypes = inService.getBookTypes(user.getEmail()); 
 		String xml = ExtHelper.getJsonFromList(bookTypes.size(), bookTypes, "");
 		response.setContentType("text/json;charset=UTF-8");
 		response.getWriter().write(xml);

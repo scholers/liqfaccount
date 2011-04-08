@@ -19,8 +19,6 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.scholers.account.bean.Pay;
 import com.scholers.account.bean.PayType;
 import com.scholers.account.business.PayServicesIntf;
-import com.scholers.account.business.impl.InService;
-import com.scholers.account.business.impl.PayService;
 import com.scholers.account.util.ComUtil;
 import com.scholers.account.util.ExtHelper;
 
@@ -113,6 +111,45 @@ public class PayActionExt extends DispatchAction {
 	 * @throws Exception
 	 */
 	public ActionForward getPayTypeList(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		List<PayType> payTypes = payService.getPayTypes(user.getEmail());
+		List<PayType> payTypeRtns = new ArrayList<PayType>();
+		
+		//分页
+		int count = 10;
+		 //总数
+	    int totalSize = payTypes.size();
+	    int startNum = 0;
+	    if(request.getParameter("start") != null){
+	    	startNum = Integer.parseInt(request.getParameter("start"));
+	    }
+	    int endNum = startNum + count;
+	    
+	    if(endNum > totalSize){
+	    	endNum = totalSize;
+	    }
+	    
+		payTypeRtns.addAll(payTypes.subList(startNum, endNum));
+		String strJson = ExtHelper.getJsonFromList(totalSize, payTypeRtns, "");
+		response.setContentType("text/json;charset=UTF-8");
+		response.getWriter().write(strJson);
+		return null;
+	}
+	
+	
+	/**
+	 * 查询所有支付类型信息
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward getPayTypeListAll(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
