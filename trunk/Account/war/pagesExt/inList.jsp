@@ -213,7 +213,7 @@ var dftDate = '<%=strCurDate%>';
 						])
 						),
 						proxy : new Ext.data.HttpProxy({
-							url : 'inext.do?method=getBookTypeList'
+							url : 'inext.do?method=getBookTypeListAll'
 						})
 					}),//设置数据源
 					allQuery:'allbook',//查询全部信息的查询字符串

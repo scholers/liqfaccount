@@ -56,7 +56,6 @@ public class ExtHelper {
 	 */
 	public static String getJsonFromList(long recordTotal , List beanList, String strTotalMoney){
 		TotalJson total = new TotalJson();
-		List Ll = new ArrayList();
 		total.setResults(recordTotal);
 		total.setItems(beanList);  
 		total.setStrTotalMoney(strTotalMoney);
@@ -85,7 +84,6 @@ public class ExtHelper {
 	 */
 	public static String getJsonFromListTime(long recordTotal , List beanList, String strTotalMoney){
 		TotalJson total = new TotalJson();
-		List Ll = new ArrayList();
 		total.setResults(recordTotal);
 		total.setItems(beanList);  
 		total.setStrTotalMoney(strTotalMoney);
