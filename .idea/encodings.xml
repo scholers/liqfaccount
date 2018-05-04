@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/action/AnalysisAction.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/action/InActionExt.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/action/PayActionExt.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/action/UsersActionExt.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/bean/ChartBean.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/bean/CountBean.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/util/BookTypeSingle.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/util/ExtHelper.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/scholers/account/util/PayTypeSingle.java" charset="GBK" />
+  </component>
+</project>
